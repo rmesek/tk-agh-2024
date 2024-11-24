@@ -1,0 +1,9 @@
+6 zajęć
+5 zadań kolejnych (zależnych) do oddawania na kolejnych zajęciach (istotne są początkowe etapy)
+1 lub 2 osobowo (obie osoby wysyłają)
+odsyłanie na teams
+więcej plików = spakować ZIP
+
+prosty interpreter języka macierzowego
+1. skaner, analizator leksykalny
+    
