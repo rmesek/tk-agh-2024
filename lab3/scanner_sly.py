@@ -9,37 +9,35 @@ class Scanner(Lexer):
     def __init__(self):
         self.nesting_level = 0
 
-    tokens = {ID, IF, ELSE, WHILE, FOR, BREAK, CONTINUE, RETURN, EYE, ZEROS, ONES, PRINT, INTNUM, FLOAT, MULASSIGN, SUBASSIGN, ADDASSIGN, DIVASSIGN, DOTADD, DOTSUB, DOTMUL, DOTDIV, ADD, SUB, MUL, DIV, LT, GT, LTE, GTE, EQ, NEQ, STRING}
+    ignore = r" \t"
+    ignore_comment = r"#.*"
 
-    ignore = " \t"
-    ignore_comment = "#.*"
-
-    LTE = r"<="
-    GTE = r">="
-    LT = r"<"
-    GT = r">"
-    EQ = r"=="
-    NEQ = r"!="
-
-    MULASSIGN = r"\*="
-    SUBASSIGN = r"-="
-    ADDASSIGN = r"\+="
-    DIVASSIGN = r"/="
-
-    DOTADD = r"\.\+"
-    DOTSUB = r"\.-"
-    DOTMUL = r"\.\*"
-    DOTDIV = r"\./"
-
-    ADD = r"\+"
-    SUB = r"-"
-    MUL = r"\*"
-    DIV = r"/"
-
+    tokens = {
+        DOTADD, DOTSUB, DOTMUL, DOTDIV, ADDASSIGN, SUBASSIGN, MULASSIGN,
+        DIVASSIGN, ADD, SUB, MUL, DIV, LT, GT, LTE, GTE, NEQ, EQ, ID,
+        INTNUM, FLOAT, STRING,
+        # reserved tokens
+        IF, ELSE, FOR, WHILE, BREAK, CONTINUE, RETURN, EYE, ZEROS, ONES, 
+        PRINT,   
+        }
+    
     literals = {"(", ")", "{", "}", "[", "]", ",", ";", ":", "'", "="}
 
-    STRING = r"\".*\""
+    EQ = r"=="; NEQ = r"!="
+    LTE = r"<="; GTE = r">="
+    LT = r"<"; GT = r">"
 
+    ADDASSIGN = r"\+="; SUBASSIGN = r"-="
+    MULASSIGN = r"\*="; DIVASSIGN = r"/="
+
+    ADD = r"\+"; SUB = r"-"
+    MUL = r"\*"; DIV = r"/"
+
+    DOTADD = r"\.\+"; DOTSUB = r"\.-"
+    DOTMUL = r"\.\*"; DOTDIV = r"\./"
+
+
+    STRING = r"\".*\""
     ID = r"[a-zA-Z_][\w_]*"
     ID["if"] = IF
     ID["else"] = ELSE
@@ -80,7 +78,8 @@ class Scanner(Lexer):
         self.lineno += len(t.value)
 
     def error(self, t):
-        print("Line %d: Bad character %r" % (self.lineno, t.value[0]))
+        print(f"{"\033[91m"}Illegal character '{t.value[0]}'"
+              + f" at line {t.lineno}!{"\033[0m"}")
         self.index += 1
 
     @_(r"[\d\.\?]+[a-zA-Z]*")
