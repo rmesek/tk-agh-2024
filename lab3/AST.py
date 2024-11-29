@@ -1,89 +1,215 @@
 # type: ignore
 # ruff: noqa
 
-from dataclasses import dataclass
-from typing import List
 
+class Node(object):
+    def __init__(self, lineno):
+        self.lineno = lineno
 
-@dataclass
-class Node:
     pass
 
 
-@dataclass
+class StatementsNode(Node):
+    def __init__(self, statements, lineno):
+        super().__init__(lineno)
+        self.statements = statements
+
+
+class StatementNode(Node):
+    def __init__(self, statement, lineno):
+        super().__init__(lineno)
+        self.statement = statement
+
+
+class BreakStatement(Node):
+    def __init__(self, lineno):
+        super().__init__(lineno)
+
+    pass
+
+
+class ContinueStatement(Node):
+    def __init__(self, lineno):
+        super().__init__(lineno)
+
+    pass
+
+
+class ReturnStatement(Node):
+    def __init__(self, expr, lineno):
+        super().__init__(lineno)
+        self.expr = expr
+
+
+class BlankStatement(Node):
+    def __init__(self, lineno):
+        super().__init__(lineno)
+
+    pass
+
+
 class IntNum(Node):
-    value: int
+    def __init__(self, value, lineno):
+        super().__init__(lineno)
+        self.value = value
 
 
-@dataclass
 class FloatNum(Node):
-    value: float
+    def __init__(self, value, lineno):
+        super().__init__(lineno)
+        self.value = value
 
 
-@dataclass
-class String(Node):
-    value: str
+class IDNode(Node):
+    def __init__(self, name, lineno):
+        super().__init__(lineno)
+        self.name = name
 
 
-@dataclass
+class WhileNode(Node):
+    def __init__(self, condition, body, lineno):
+        super().__init__(lineno)
+        self.condition = condition
+        self.body = body
+
+
+class ForNode(Node):
+    def __init__(self, variable, start, end, body, lineno):
+        super().__init__(lineno)
+        self.variable = variable
+        self.start = start
+        self.end = end
+        self.body = body
+
+
+class IfElseNode(Node):
+    def __init__(self, condition, if_body, else_body=None, lineno=0):
+        super().__init__(lineno)
+        self.condition = condition
+        self.if_body = if_body
+        self.else_body = else_body
+
+
+class AssignExpression(Node):
+    def __init__(self, left, operator, right, lineno):
+        super().__init__(lineno)
+        self.left = left
+        self.operator = operator
+        self.right = right
+
+
 class Variable(Node):
-    name: str
+    def __init__(self, name, lineno):
+        super().__init__(lineno)
+        self.name = name.strip('"')
 
 
-@dataclass
 class BinExpr(Node):
-    op: str
-    left: Node
-    right: Node
+    def __init__(self, op, left, right, lineno):
+        super().__init__(lineno)
+        self.op = op
+        self.left = left
+        self.right = right
 
 
-@dataclass
-class Assignment(Node):
-    op: str
-    variable: Variable
-    expression: Node
+class RelationExpression(Node):
+    def __init__(self, op, left, right, lineno):
+        super().__init__(lineno)
+        self.op = op
+        self.left = left
+        self.right = right
 
 
-@dataclass
-class MatrixFunction(Node):
-    function: str
-    argument: Node
+class MatrixFuncNode(Node):
+    def __init__(self, func_name, arg, lineno):
+        super().__init__(lineno)
+        self.func_name = func_name
+        self.arg = arg
 
 
-@dataclass
-class Matrix(Node):
-    rows: List[List[Node]]
+class ZerosNode(MatrixFuncNode):
+    def __init__(self, func_name, arg, lineno):
+        super().__init__(func_name, arg, lineno)
+
+    pass
 
 
-@dataclass
-class MatrixAccess(Node):
-    variable: Variable
-    indices: List[Node]
+class OnesNode(MatrixFuncNode):
+    def __init__(self, func_name, arg, lineno):
+        super().__init__(func_name, arg, lineno)
+
+    pass
 
 
-@dataclass
-class UnaryExpr(Node):
-    op: str
-    expr: Node
+class EyeNode(MatrixFuncNode):
+    def __init__(self, func_name, arg, lineno):
+        super().__init__(func_name, arg, lineno)
+
+    pass
 
 
-@dataclass
-class Transpose(Node):
-    expr: Node
+class MatrixRefNode(Node):
+    def __init__(self, id, values, lineno):
+        super().__init__(lineno)
+        self.id = id
+        self.values = values
 
 
-@dataclass
-class Condition(Node):
-    op: str
-    left: Node
-    right: Node
+class IDRefNode(Node):
+    def __init__(self, value, lineno):
+        super().__init__(lineno)
+        self.value = value
 
 
-@dataclass
-class Print(Node):
-    expressions: List[Node]
+class PrintNode(Node):
+    def __init__(self, value, lineno):
+        super().__init__(lineno)
+        self.value = value
 
 
-@dataclass
+class PrintRekNode(Node):
+    def __init__(self, values, lineno):
+        super().__init__(lineno)
+        self.values = values
+
+
+class StringOfNumNode(Node):
+    def __init__(self, values, lineno):
+        super().__init__(lineno)
+        self.values = values
+
+
+class ExpressionNode(Node):
+    def __init__(self, expr, lineno):
+        super().__init__(lineno)
+        self.expr = expr
+
+
+class NegationNode(Node):
+    def __init__(self, expr, lineno):
+        super().__init__(lineno)
+        self.expr = expr
+
+
+class TransposeNode(Node):
+    def __init__(self, expr, lineno):
+        super().__init__(lineno)
+        self.expr = expr
+
+
+class MatrixNode(Node):
+    def __init__(self, values, lineno):
+        super().__init__(lineno)
+        self.values = values
+
+
+class MatrixRowsNode(Node):
+    def __init__(self, values, lineno):
+        super().__init__(lineno)
+        self.values = values
+
+
 class Error(Node):
-    message: str = ""
+    def __init__(self, lineno):
+        super().__init__(lineno)
+        pass

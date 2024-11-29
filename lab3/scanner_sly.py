@@ -6,59 +6,45 @@ from sly import Lexer
 
 
 class Scanner(Lexer):
-    # operatory binare: +, -, *, /
-    # macierzowe operatory binarne 
-    #   (dla operacji element po elemencie): .+, .-, .*, ./
-    # operatory przypisania: =, +=, -=, *=, /=
-    # operatory relacyjne: <, >, <=, >=, !=, ==
-    # nawiasy: (,), [,], {,}
-    # operator zakresu: :
-    # transpozycja macierzy: '
-    # przecinek i średnik: , ;
-    # słowa kluczowe: if, else, for, while
-    # słowa kluczowe: break, continue oraz return
-    # słowa kluczowe: eye, zeros oraz ones
-    # słowa kluczowe: print
-    # identyfikatory (pierwszy znak identyfikatora to litera lub 
-    #   znak _, w kolejnych znakach mogą dodatkowo wystąpić cyfry)
-    # liczby całkowite
-    # liczby zmiennoprzecinkowe
-    # stringi
+    def __init__(self):
+        self.nesting_level = 0
 
-    # String containing ignored characters between tokens
-    # białe znaki: spacje, tabulatory, znaki nowej linii
-    # komentarze: komentarze rozpoczynające się znakiem # 
-    #   do znaku końca linii
+    tokens = {ID, IF, ELSE, WHILE, FOR, BREAK, CONTINUE, RETURN, EYE, ZEROS, ONES, PRINT, INTNUM, FLOAT, MULASSIGN, SUBASSIGN, ADDASSIGN, DIVASSIGN, DOTADD, DOTSUB, DOTMUL, DOTDIV, ADD, SUB, MUL, DIV, LT, GT, LTE, GTE, EQ, NEQ, STRING}
+
     ignore = " \t"
+    ignore_comment = "#.*"
 
-    ignore_comment = r"#.*"
+    LTE = r"<="
+    GTE = r">="
+    LT = r"<"
+    GT = r">"
+    EQ = r"=="
+    NEQ = r"!="
 
-    # Set of token names.
-    tokens = {
-        DOTADD, DOTSUB, DOTMUL, DOTDIV, ADDASSIGN, SUBASSIGN, MULASSIGN, 
-        DIVASSIGN, LE, GE, NE, EQ, ID, INTNUM, FLOATNUM, STRING,
-        # reserved tokens
-        IF, IFX, ELSE, FOR, WHILE, BREAK, CONTINUE, RETURN, EYE, ZEROS, ONES,
-        PRINT,
-    }
+    MULASSIGN = r"\*="
+    SUBASSIGN = r"-="
+    ADDASSIGN = r"\+="
+    DIVASSIGN = r"/="
 
-    literals = {
-        "<", ">", "=", "+", "-", "*", "/", "{", "}", "[", "]", "(", ")",
-        ":", "'", ",", ";",
-    }
+    DOTADD = r"\.\+"
+    DOTSUB = r"\.-"
+    DOTMUL = r"\.\*"
+    DOTDIV = r"\./"
 
-    EQ = r"=="; NE = r"!="
-    LE = r"<="; GE = r">="
-    ADDASSIGN = r"\+="; SUBASSIGN = r"-="
-    MULASSIGN = r"\*="; DIVASSIGN = r"/="
-    DOTADD = r"\.\+"; DOTSUB = r"\.-"
-    DOTMUL = r"\.\*"; DOTDIV = r"\./"
+    ADD = r"\+"
+    SUB = r"-"
+    MUL = r"\*"
+    DIV = r"/"
 
-    ID = r"[a-zA-Z_][a-zA-Z0-9_]*"
+    literals = {"(", ")", "{", "}", "[", "]", ",", ";", ":", "'", "="}
+
+    STRING = r"\".*\""
+
+    ID = r"[a-zA-Z_][\w_]*"
     ID["if"] = IF
     ID["else"] = ELSE
-    ID["for"] = FOR
     ID["while"] = WHILE
+    ID["for"] = FOR
     ID["break"] = BREAK
     ID["continue"] = CONTINUE
     ID["return"] = RETURN
@@ -67,17 +53,26 @@ class Scanner(Lexer):
     ID["ones"] = ONES
     ID["print"] = PRINT
 
+    @_(r"[\{\[\(]")
+    def lbrace(self, t):
+        t.type = t.value
+        self.nesting_level += 1
+        return t
+
+    @_(r"[\}\]\)]")
+    def rbrace(self, t):
+        t.type = t.value
+        self.nesting_level -= 1
+        return t
+
     @_(r"\d+[eE][-+]?\d+|\d*\.(\d*([eE][-+]?\d+)?)?")
-    def FLOATNUM(self, t):
+    def FLOAT(self, t):
+        t.value = float(t.value)
         return t
 
     @_(r"\d+")
     def INTNUM(self, t):
-        return t
-
-    @_(r"\".*?\"")
-    def STRING(self, t):
-        t.value = t.value[1:-1]
+        t.value = int(t.value)
         return t
 
     @_(r"\n+")
@@ -85,15 +80,17 @@ class Scanner(Lexer):
         self.lineno += len(t.value)
 
     def error(self, t):
-        print(f"{"\033[91m"}Illegal character '{t.value[0]}'"
-              + f" at line {t.lineno}!{"\033[0m"}")
+        print("Line %d: Bad character %r" % (self.lineno, t.value[0]))
         self.index += 1
+
+    @_(r"[\d\.\?]+[a-zA-Z]*")
+    def bad_token(self, t):
+        print(f"ERROR: Unknown token at line {self.lineno}: {t.value}")
 
 
 if __name__ == "__main__":
     try:
-        filename = sys.argv[1] if len(sys.argv) > 1 \
-                               else "example.txt"
+        filename = sys.argv[1] if len(sys.argv) > 1 else "example.txt"
         file = open(filename, "r")
     except IOError:
         print("Cannot open {0} file".format(filename))

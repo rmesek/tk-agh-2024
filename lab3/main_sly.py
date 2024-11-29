@@ -20,4 +20,4 @@ if __name__ == "__main__":
     parser = Mparser()
 
     ast = parser.parse(lexer.tokenize(text))
-    print(ast.printTree())
+    ast.printTree()
