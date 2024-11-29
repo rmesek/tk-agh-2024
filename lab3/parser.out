@@ -1,0 +1,3916 @@
+Grammar:
+
+Rule 0     S' -> program
+Rule 1     program -> instructions_opt
+Rule 2     instructions_opt -> instruction
+Rule 3     instructions_opt -> <empty>
+Rule 4     instructions_opt -> instructions_opt instruction
+Rule 5     instructions -> instruction
+Rule 6     instructions -> instructions instruction
+Rule 7     instruction -> RETURN expression ;
+Rule 8     instruction -> CONTINUE ;
+Rule 9     instruction -> BREAK ;
+Rule 10    instruction -> print_statement
+Rule 11    instruction -> assignment
+Rule 12    instruction -> for_statement
+Rule 13    instruction -> while_statement
+Rule 14    instruction -> if_statement
+Rule 15    instruction -> { instructions }
+Rule 16    instruction -> ;
+Rule 17    if_statement -> IF ( condition ) instruction  [precedence=nonassoc, level=1]
+Rule 18    if_statement -> IF ( condition ) instruction ELSE instruction  [precedence=nonassoc, level=2]
+Rule 19    while_statement -> WHILE ( condition ) instruction
+Rule 20    for_statement -> FOR ID = range instruction
+Rule 21    range -> expression : expression
+Rule 22    print_statement -> PRINT print_list ;
+Rule 23    print_list -> expression
+Rule 24    print_list -> print_list , expression
+Rule 25    expression -> matrix_function
+Rule 26    expression -> variable
+Rule 27    expression -> STRING
+Rule 28    expression -> FLOATNUM
+Rule 29    expression -> INTNUM
+Rule 30    expression -> ( expression )
+Rule 31    expression -> expression '  [precedence=nonassoc, level=6]
+Rule 32    expression -> [ matrix_rows ]
+Rule 33    expression -> - expression  [precedence=left, level=4]
+Rule 34    expression -> expression DOTDIV expression  [precedence=left, level=5]
+Rule 35    expression -> expression DOTMUL expression  [precedence=left, level=5]
+Rule 36    expression -> expression DOTSUB expression  [precedence=left, level=4]
+Rule 37    expression -> expression DOTADD expression  [precedence=left, level=4]
+Rule 38    expression -> expression / expression  [precedence=left, level=5]
+Rule 39    expression -> expression * expression  [precedence=left, level=5]
+Rule 40    expression -> expression - expression  [precedence=left, level=4]
+Rule 41    expression -> expression + expression  [precedence=left, level=4]
+Rule 42    variable -> matrix_access
+Rule 43    variable -> ID
+Rule 44    assignment -> variable DIVASSIGN expression ;
+Rule 45    assignment -> variable MULASSIGN expression ;
+Rule 46    assignment -> variable SUBASSIGN expression ;
+Rule 47    assignment -> variable ADDASSIGN expression ;
+Rule 48    assignment -> variable = expression ;
+Rule 49    matrix_function -> EYE ( INTNUM )
+Rule 50    matrix_function -> ONES ( INTNUM )
+Rule 51    matrix_function -> ZEROS ( INTNUM )
+Rule 52    matrix_access -> ID [ index_list ]
+Rule 53    index_list -> index
+Rule 54    index_list -> index_list , index
+Rule 55    index -> expression
+Rule 56    matrix_rows -> matrix_row
+Rule 57    matrix_rows -> matrix_rows ; matrix_row
+Rule 58    matrix_row -> [ number_list ]
+Rule 59    number_list -> signed_number
+Rule 60    number_list -> number_list , signed_number
+Rule 61    signed_number -> - number  [precedence=left, level=4]
+Rule 62    signed_number -> number
+Rule 63    number -> INTNUM
+Rule 64    number -> FLOATNUM
+Rule 65    condition -> expression NE expression  [precedence=nonassoc, level=3]
+Rule 66    condition -> expression EQ expression  [precedence=nonassoc, level=3]
+Rule 67    condition -> expression GE expression  [precedence=nonassoc, level=3]
+Rule 68    condition -> expression LE expression  [precedence=nonassoc, level=3]
+Rule 69    condition -> expression > expression  [precedence=nonassoc, level=3]
+Rule 70    condition -> expression < expression  [precedence=nonassoc, level=3]
+
+Terminals, with rules where they appear:
+
+'                    : 31
+(                    : 17 18 19 30 49 50 51
+)                    : 17 18 19 30 49 50 51
+*                    : 39
++                    : 41
+,                    : 24 54 60
+-                    : 33 40 61
+/                    : 38
+:                    : 21
+;                    : 7 8 9 16 22 44 45 46 47 48 57
+<                    : 70
+=                    : 20 48
+>                    : 69
+ADDASSIGN            : 47
+BREAK                : 9
+CONTINUE             : 8
+DIVASSIGN            : 44
+DOTADD               : 37
+DOTDIV               : 34
+DOTMUL               : 35
+DOTSUB               : 36
+ELSE                 : 18
+EQ                   : 66
+EYE                  : 49
+FLOATNUM             : 28 64
+FOR                  : 20
+GE                   : 67
+ID                   : 20 43 52
+IF                   : 17 18
+INTNUM               : 29 49 50 51 63
+LE                   : 68
+MULASSIGN            : 45
+NE                   : 65
+ONES                 : 50
+PRINT                : 22
+RETURN               : 7
+STRING               : 27
+SUBASSIGN            : 46
+WHILE                : 19
+ZEROS                : 51
+[                    : 32 52 58
+]                    : 32 52 58
+error                : 
+{                    : 15
+}                    : 15
+
+Nonterminals, with rules where they appear:
+
+assignment           : 11
+condition            : 17 18 19
+expression           : 7 21 21 23 24 30 31 33 34 34 35 35 36 36 37 37 38 38 39 39 40 40 41 41 44 45 46 47 48 55 65 65 66 66 67 67 68 68 69 69 70 70
+for_statement        : 12
+if_statement         : 14
+index                : 53 54
+index_list           : 52 54
+instruction          : 2 4 5 6 17 18 18 19 20
+instructions         : 6 15
+instructions_opt     : 1 4
+matrix_access        : 42
+matrix_function      : 25
+matrix_row           : 56 57
+matrix_rows          : 32 57
+number               : 61 62
+number_list          : 58 60
+print_list           : 22 24
+print_statement      : 10
+program              : 0
+range                : 20
+signed_number        : 59 60
+variable             : 26 44 45 46 47 48
+while_statement      : 13
+
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . instructions_opt
+    (2) instructions_opt -> . instruction
+    (3) instructions_opt -> .
+    (4) instructions_opt -> . instructions_opt instruction
+    (7) instruction -> . RETURN expression ;
+    (8) instruction -> . CONTINUE ;
+    (9) instruction -> . BREAK ;
+    (10) instruction -> . print_statement
+    (11) instruction -> . assignment
+    (12) instruction -> . for_statement
+    (13) instruction -> . while_statement
+    (14) instruction -> . if_statement
+    (15) instruction -> . { instructions }
+    (16) instruction -> . ;
+    (22) print_statement -> . PRINT print_list ;
+    (44) assignment -> . variable DIVASSIGN expression ;
+    (45) assignment -> . variable MULASSIGN expression ;
+    (46) assignment -> . variable SUBASSIGN expression ;
+    (47) assignment -> . variable ADDASSIGN expression ;
+    (48) assignment -> . variable = expression ;
+    (20) for_statement -> . FOR ID = range instruction
+    (19) while_statement -> . WHILE ( condition ) instruction
+    (17) if_statement -> . IF ( condition ) instruction
+    (18) if_statement -> . IF ( condition ) instruction ELSE instruction
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+  ! shift/reduce conflict for RETURN resolved as shift
+  ! shift/reduce conflict for CONTINUE resolved as shift
+  ! shift/reduce conflict for BREAK resolved as shift
+  ! shift/reduce conflict for { resolved as shift
+  ! shift/reduce conflict for ; resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+    $end            reduce using rule 3 (instructions_opt -> .)
+    RETURN          shift and go to state 4
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    {               shift and go to state 13
+    ;               shift and go to state 5
+    PRINT           shift and go to state 14
+    FOR             shift and go to state 16
+    WHILE           shift and go to state 18
+    IF              shift and go to state 19
+    ID              shift and go to state 17
+
+    program                        shift and go to state 1
+    instructions_opt               shift and go to state 2
+    instruction                    shift and go to state 3
+    print_statement                shift and go to state 8
+    assignment                     shift and go to state 9
+    for_statement                  shift and go to state 10
+    while_statement                shift and go to state 11
+    if_statement                   shift and go to state 12
+    variable                       shift and go to state 15
+    matrix_access                  shift and go to state 20
+
+state 1
+
+    (0) S' -> program .
+
+
+state 2
+
+    (1) program -> instructions_opt .
+    (4) instructions_opt -> instructions_opt . instruction
+    (7) instruction -> . RETURN expression ;
+    (8) instruction -> . CONTINUE ;
+    (9) instruction -> . BREAK ;
+    (10) instruction -> . print_statement
+    (11) instruction -> . assignment
+    (12) instruction -> . for_statement
+    (13) instruction -> . while_statement
+    (14) instruction -> . if_statement
+    (15) instruction -> . { instructions }
+    (16) instruction -> . ;
+    (22) print_statement -> . PRINT print_list ;
+    (44) assignment -> . variable DIVASSIGN expression ;
+    (45) assignment -> . variable MULASSIGN expression ;
+    (46) assignment -> . variable SUBASSIGN expression ;
+    (47) assignment -> . variable ADDASSIGN expression ;
+    (48) assignment -> . variable = expression ;
+    (20) for_statement -> . FOR ID = range instruction
+    (19) while_statement -> . WHILE ( condition ) instruction
+    (17) if_statement -> . IF ( condition ) instruction
+    (18) if_statement -> . IF ( condition ) instruction ELSE instruction
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    $end            reduce using rule 1 (program -> instructions_opt .)
+    RETURN          shift and go to state 4
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    {               shift and go to state 13
+    ;               shift and go to state 5
+    PRINT           shift and go to state 14
+    FOR             shift and go to state 16
+    WHILE           shift and go to state 18
+    IF              shift and go to state 19
+    ID              shift and go to state 17
+
+    instruction                    shift and go to state 21
+    print_statement                shift and go to state 8
+    assignment                     shift and go to state 9
+    for_statement                  shift and go to state 10
+    while_statement                shift and go to state 11
+    if_statement                   shift and go to state 12
+    variable                       shift and go to state 15
+    matrix_access                  shift and go to state 20
+
+state 3
+
+    (2) instructions_opt -> instruction .
+    RETURN          reduce using rule 2 (instructions_opt -> instruction .)
+    CONTINUE        reduce using rule 2 (instructions_opt -> instruction .)
+    BREAK           reduce using rule 2 (instructions_opt -> instruction .)
+    {               reduce using rule 2 (instructions_opt -> instruction .)
+    ;               reduce using rule 2 (instructions_opt -> instruction .)
+    PRINT           reduce using rule 2 (instructions_opt -> instruction .)
+    FOR             reduce using rule 2 (instructions_opt -> instruction .)
+    WHILE           reduce using rule 2 (instructions_opt -> instruction .)
+    IF              reduce using rule 2 (instructions_opt -> instruction .)
+    ID              reduce using rule 2 (instructions_opt -> instruction .)
+    $end            reduce using rule 2 (instructions_opt -> instruction .)
+
+
+state 4
+
+    (7) instruction -> RETURN . expression ;
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 22
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 5
+
+    (16) instruction -> ; .
+    RETURN          reduce using rule 16 (instruction -> ; .)
+    CONTINUE        reduce using rule 16 (instruction -> ; .)
+    BREAK           reduce using rule 16 (instruction -> ; .)
+    {               reduce using rule 16 (instruction -> ; .)
+    ;               reduce using rule 16 (instruction -> ; .)
+    PRINT           reduce using rule 16 (instruction -> ; .)
+    FOR             reduce using rule 16 (instruction -> ; .)
+    WHILE           reduce using rule 16 (instruction -> ; .)
+    IF              reduce using rule 16 (instruction -> ; .)
+    ID              reduce using rule 16 (instruction -> ; .)
+    $end            reduce using rule 16 (instruction -> ; .)
+    }               reduce using rule 16 (instruction -> ; .)
+    ELSE            reduce using rule 16 (instruction -> ; .)
+
+
+state 6
+
+    (8) instruction -> CONTINUE . ;
+    ;               shift and go to state 34
+
+
+state 7
+
+    (9) instruction -> BREAK . ;
+    ;               shift and go to state 35
+
+
+state 8
+
+    (10) instruction -> print_statement .
+    RETURN          reduce using rule 10 (instruction -> print_statement .)
+    CONTINUE        reduce using rule 10 (instruction -> print_statement .)
+    BREAK           reduce using rule 10 (instruction -> print_statement .)
+    {               reduce using rule 10 (instruction -> print_statement .)
+    ;               reduce using rule 10 (instruction -> print_statement .)
+    PRINT           reduce using rule 10 (instruction -> print_statement .)
+    FOR             reduce using rule 10 (instruction -> print_statement .)
+    WHILE           reduce using rule 10 (instruction -> print_statement .)
+    IF              reduce using rule 10 (instruction -> print_statement .)
+    ID              reduce using rule 10 (instruction -> print_statement .)
+    $end            reduce using rule 10 (instruction -> print_statement .)
+    }               reduce using rule 10 (instruction -> print_statement .)
+    ELSE            reduce using rule 10 (instruction -> print_statement .)
+
+
+state 9
+
+    (11) instruction -> assignment .
+    RETURN          reduce using rule 11 (instruction -> assignment .)
+    CONTINUE        reduce using rule 11 (instruction -> assignment .)
+    BREAK           reduce using rule 11 (instruction -> assignment .)
+    {               reduce using rule 11 (instruction -> assignment .)
+    ;               reduce using rule 11 (instruction -> assignment .)
+    PRINT           reduce using rule 11 (instruction -> assignment .)
+    FOR             reduce using rule 11 (instruction -> assignment .)
+    WHILE           reduce using rule 11 (instruction -> assignment .)
+    IF              reduce using rule 11 (instruction -> assignment .)
+    ID              reduce using rule 11 (instruction -> assignment .)
+    $end            reduce using rule 11 (instruction -> assignment .)
+    }               reduce using rule 11 (instruction -> assignment .)
+    ELSE            reduce using rule 11 (instruction -> assignment .)
+
+
+state 10
+
+    (12) instruction -> for_statement .
+    RETURN          reduce using rule 12 (instruction -> for_statement .)
+    CONTINUE        reduce using rule 12 (instruction -> for_statement .)
+    BREAK           reduce using rule 12 (instruction -> for_statement .)
+    {               reduce using rule 12 (instruction -> for_statement .)
+    ;               reduce using rule 12 (instruction -> for_statement .)
+    PRINT           reduce using rule 12 (instruction -> for_statement .)
+    FOR             reduce using rule 12 (instruction -> for_statement .)
+    WHILE           reduce using rule 12 (instruction -> for_statement .)
+    IF              reduce using rule 12 (instruction -> for_statement .)
+    ID              reduce using rule 12 (instruction -> for_statement .)
+    $end            reduce using rule 12 (instruction -> for_statement .)
+    }               reduce using rule 12 (instruction -> for_statement .)
+    ELSE            reduce using rule 12 (instruction -> for_statement .)
+
+
+state 11
+
+    (13) instruction -> while_statement .
+    RETURN          reduce using rule 13 (instruction -> while_statement .)
+    CONTINUE        reduce using rule 13 (instruction -> while_statement .)
+    BREAK           reduce using rule 13 (instruction -> while_statement .)
+    {               reduce using rule 13 (instruction -> while_statement .)
+    ;               reduce using rule 13 (instruction -> while_statement .)
+    PRINT           reduce using rule 13 (instruction -> while_statement .)
+    FOR             reduce using rule 13 (instruction -> while_statement .)
+    WHILE           reduce using rule 13 (instruction -> while_statement .)
+    IF              reduce using rule 13 (instruction -> while_statement .)
+    ID              reduce using rule 13 (instruction -> while_statement .)
+    $end            reduce using rule 13 (instruction -> while_statement .)
+    }               reduce using rule 13 (instruction -> while_statement .)
+    ELSE            reduce using rule 13 (instruction -> while_statement .)
+
+
+state 12
+
+    (14) instruction -> if_statement .
+    RETURN          reduce using rule 14 (instruction -> if_statement .)
+    CONTINUE        reduce using rule 14 (instruction -> if_statement .)
+    BREAK           reduce using rule 14 (instruction -> if_statement .)
+    {               reduce using rule 14 (instruction -> if_statement .)
+    ;               reduce using rule 14 (instruction -> if_statement .)
+    PRINT           reduce using rule 14 (instruction -> if_statement .)
+    FOR             reduce using rule 14 (instruction -> if_statement .)
+    WHILE           reduce using rule 14 (instruction -> if_statement .)
+    IF              reduce using rule 14 (instruction -> if_statement .)
+    ID              reduce using rule 14 (instruction -> if_statement .)
+    $end            reduce using rule 14 (instruction -> if_statement .)
+    }               reduce using rule 14 (instruction -> if_statement .)
+    ELSE            reduce using rule 14 (instruction -> if_statement .)
+
+
+state 13
+
+    (15) instruction -> { . instructions }
+    (5) instructions -> . instruction
+    (6) instructions -> . instructions instruction
+    (7) instruction -> . RETURN expression ;
+    (8) instruction -> . CONTINUE ;
+    (9) instruction -> . BREAK ;
+    (10) instruction -> . print_statement
+    (11) instruction -> . assignment
+    (12) instruction -> . for_statement
+    (13) instruction -> . while_statement
+    (14) instruction -> . if_statement
+    (15) instruction -> . { instructions }
+    (16) instruction -> . ;
+    (22) print_statement -> . PRINT print_list ;
+    (44) assignment -> . variable DIVASSIGN expression ;
+    (45) assignment -> . variable MULASSIGN expression ;
+    (46) assignment -> . variable SUBASSIGN expression ;
+    (47) assignment -> . variable ADDASSIGN expression ;
+    (48) assignment -> . variable = expression ;
+    (20) for_statement -> . FOR ID = range instruction
+    (19) while_statement -> . WHILE ( condition ) instruction
+    (17) if_statement -> . IF ( condition ) instruction
+    (18) if_statement -> . IF ( condition ) instruction ELSE instruction
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    RETURN          shift and go to state 4
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    {               shift and go to state 13
+    ;               shift and go to state 5
+    PRINT           shift and go to state 14
+    FOR             shift and go to state 16
+    WHILE           shift and go to state 18
+    IF              shift and go to state 19
+    ID              shift and go to state 17
+
+    instructions                   shift and go to state 36
+    instruction                    shift and go to state 37
+    print_statement                shift and go to state 8
+    assignment                     shift and go to state 9
+    for_statement                  shift and go to state 10
+    while_statement                shift and go to state 11
+    if_statement                   shift and go to state 12
+    variable                       shift and go to state 15
+    matrix_access                  shift and go to state 20
+
+state 14
+
+    (22) print_statement -> PRINT . print_list ;
+    (23) print_list -> . expression
+    (24) print_list -> . print_list , expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    print_list                     shift and go to state 38
+    expression                     shift and go to state 39
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 15
+
+    (44) assignment -> variable . DIVASSIGN expression ;
+    (45) assignment -> variable . MULASSIGN expression ;
+    (46) assignment -> variable . SUBASSIGN expression ;
+    (47) assignment -> variable . ADDASSIGN expression ;
+    (48) assignment -> variable . = expression ;
+    DIVASSIGN       shift and go to state 40
+    MULASSIGN       shift and go to state 41
+    SUBASSIGN       shift and go to state 42
+    ADDASSIGN       shift and go to state 43
+    =               shift and go to state 44
+
+
+state 16
+
+    (20) for_statement -> FOR . ID = range instruction
+    ID              shift and go to state 45
+
+
+state 17
+
+    (43) variable -> ID .
+    (52) matrix_access -> ID . [ index_list ]
+    DIVASSIGN       reduce using rule 43 (variable -> ID .)
+    MULASSIGN       reduce using rule 43 (variable -> ID .)
+    SUBASSIGN       reduce using rule 43 (variable -> ID .)
+    ADDASSIGN       reduce using rule 43 (variable -> ID .)
+    =               reduce using rule 43 (variable -> ID .)
+    ;               reduce using rule 43 (variable -> ID .)
+    '               reduce using rule 43 (variable -> ID .)
+    DOTDIV          reduce using rule 43 (variable -> ID .)
+    DOTMUL          reduce using rule 43 (variable -> ID .)
+    DOTSUB          reduce using rule 43 (variable -> ID .)
+    DOTADD          reduce using rule 43 (variable -> ID .)
+    /               reduce using rule 43 (variable -> ID .)
+    *               reduce using rule 43 (variable -> ID .)
+    -               reduce using rule 43 (variable -> ID .)
+    +               reduce using rule 43 (variable -> ID .)
+    ,               reduce using rule 43 (variable -> ID .)
+    )               reduce using rule 43 (variable -> ID .)
+    ]               reduce using rule 43 (variable -> ID .)
+    NE              reduce using rule 43 (variable -> ID .)
+    EQ              reduce using rule 43 (variable -> ID .)
+    GE              reduce using rule 43 (variable -> ID .)
+    LE              reduce using rule 43 (variable -> ID .)
+    >               reduce using rule 43 (variable -> ID .)
+    <               reduce using rule 43 (variable -> ID .)
+    :               reduce using rule 43 (variable -> ID .)
+    RETURN          reduce using rule 43 (variable -> ID .)
+    CONTINUE        reduce using rule 43 (variable -> ID .)
+    BREAK           reduce using rule 43 (variable -> ID .)
+    {               reduce using rule 43 (variable -> ID .)
+    PRINT           reduce using rule 43 (variable -> ID .)
+    FOR             reduce using rule 43 (variable -> ID .)
+    WHILE           reduce using rule 43 (variable -> ID .)
+    IF              reduce using rule 43 (variable -> ID .)
+    ID              reduce using rule 43 (variable -> ID .)
+    [               shift and go to state 46
+
+
+state 18
+
+    (19) while_statement -> WHILE . ( condition ) instruction
+    (               shift and go to state 47
+
+
+state 19
+
+    (17) if_statement -> IF . ( condition ) instruction
+    (18) if_statement -> IF . ( condition ) instruction ELSE instruction
+    (               shift and go to state 48
+
+
+state 20
+
+    (42) variable -> matrix_access .
+    DIVASSIGN       reduce using rule 42 (variable -> matrix_access .)
+    MULASSIGN       reduce using rule 42 (variable -> matrix_access .)
+    SUBASSIGN       reduce using rule 42 (variable -> matrix_access .)
+    ADDASSIGN       reduce using rule 42 (variable -> matrix_access .)
+    =               reduce using rule 42 (variable -> matrix_access .)
+    ;               reduce using rule 42 (variable -> matrix_access .)
+    '               reduce using rule 42 (variable -> matrix_access .)
+    DOTDIV          reduce using rule 42 (variable -> matrix_access .)
+    DOTMUL          reduce using rule 42 (variable -> matrix_access .)
+    DOTSUB          reduce using rule 42 (variable -> matrix_access .)
+    DOTADD          reduce using rule 42 (variable -> matrix_access .)
+    /               reduce using rule 42 (variable -> matrix_access .)
+    *               reduce using rule 42 (variable -> matrix_access .)
+    -               reduce using rule 42 (variable -> matrix_access .)
+    +               reduce using rule 42 (variable -> matrix_access .)
+    ,               reduce using rule 42 (variable -> matrix_access .)
+    )               reduce using rule 42 (variable -> matrix_access .)
+    ]               reduce using rule 42 (variable -> matrix_access .)
+    NE              reduce using rule 42 (variable -> matrix_access .)
+    EQ              reduce using rule 42 (variable -> matrix_access .)
+    GE              reduce using rule 42 (variable -> matrix_access .)
+    LE              reduce using rule 42 (variable -> matrix_access .)
+    >               reduce using rule 42 (variable -> matrix_access .)
+    <               reduce using rule 42 (variable -> matrix_access .)
+    :               reduce using rule 42 (variable -> matrix_access .)
+    RETURN          reduce using rule 42 (variable -> matrix_access .)
+    CONTINUE        reduce using rule 42 (variable -> matrix_access .)
+    BREAK           reduce using rule 42 (variable -> matrix_access .)
+    {               reduce using rule 42 (variable -> matrix_access .)
+    PRINT           reduce using rule 42 (variable -> matrix_access .)
+    FOR             reduce using rule 42 (variable -> matrix_access .)
+    WHILE           reduce using rule 42 (variable -> matrix_access .)
+    IF              reduce using rule 42 (variable -> matrix_access .)
+    ID              reduce using rule 42 (variable -> matrix_access .)
+
+
+state 21
+
+    (4) instructions_opt -> instructions_opt instruction .
+    RETURN          reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    CONTINUE        reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    BREAK           reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    {               reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    ;               reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    PRINT           reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    FOR             reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    WHILE           reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    IF              reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    ID              reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+    $end            reduce using rule 4 (instructions_opt -> instructions_opt instruction .)
+
+
+state 22
+
+    (7) instruction -> RETURN expression . ;
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               shift and go to state 49
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 23
+
+    (25) expression -> matrix_function .
+    ;               reduce using rule 25 (expression -> matrix_function .)
+    '               reduce using rule 25 (expression -> matrix_function .)
+    DOTDIV          reduce using rule 25 (expression -> matrix_function .)
+    DOTMUL          reduce using rule 25 (expression -> matrix_function .)
+    DOTSUB          reduce using rule 25 (expression -> matrix_function .)
+    DOTADD          reduce using rule 25 (expression -> matrix_function .)
+    /               reduce using rule 25 (expression -> matrix_function .)
+    *               reduce using rule 25 (expression -> matrix_function .)
+    -               reduce using rule 25 (expression -> matrix_function .)
+    +               reduce using rule 25 (expression -> matrix_function .)
+    ,               reduce using rule 25 (expression -> matrix_function .)
+    )               reduce using rule 25 (expression -> matrix_function .)
+    ]               reduce using rule 25 (expression -> matrix_function .)
+    NE              reduce using rule 25 (expression -> matrix_function .)
+    EQ              reduce using rule 25 (expression -> matrix_function .)
+    GE              reduce using rule 25 (expression -> matrix_function .)
+    LE              reduce using rule 25 (expression -> matrix_function .)
+    >               reduce using rule 25 (expression -> matrix_function .)
+    <               reduce using rule 25 (expression -> matrix_function .)
+    :               reduce using rule 25 (expression -> matrix_function .)
+    RETURN          reduce using rule 25 (expression -> matrix_function .)
+    CONTINUE        reduce using rule 25 (expression -> matrix_function .)
+    BREAK           reduce using rule 25 (expression -> matrix_function .)
+    {               reduce using rule 25 (expression -> matrix_function .)
+    PRINT           reduce using rule 25 (expression -> matrix_function .)
+    FOR             reduce using rule 25 (expression -> matrix_function .)
+    WHILE           reduce using rule 25 (expression -> matrix_function .)
+    IF              reduce using rule 25 (expression -> matrix_function .)
+    ID              reduce using rule 25 (expression -> matrix_function .)
+
+
+state 24
+
+    (26) expression -> variable .
+    ;               reduce using rule 26 (expression -> variable .)
+    '               reduce using rule 26 (expression -> variable .)
+    DOTDIV          reduce using rule 26 (expression -> variable .)
+    DOTMUL          reduce using rule 26 (expression -> variable .)
+    DOTSUB          reduce using rule 26 (expression -> variable .)
+    DOTADD          reduce using rule 26 (expression -> variable .)
+    /               reduce using rule 26 (expression -> variable .)
+    *               reduce using rule 26 (expression -> variable .)
+    -               reduce using rule 26 (expression -> variable .)
+    +               reduce using rule 26 (expression -> variable .)
+    ,               reduce using rule 26 (expression -> variable .)
+    )               reduce using rule 26 (expression -> variable .)
+    ]               reduce using rule 26 (expression -> variable .)
+    NE              reduce using rule 26 (expression -> variable .)
+    EQ              reduce using rule 26 (expression -> variable .)
+    GE              reduce using rule 26 (expression -> variable .)
+    LE              reduce using rule 26 (expression -> variable .)
+    >               reduce using rule 26 (expression -> variable .)
+    <               reduce using rule 26 (expression -> variable .)
+    :               reduce using rule 26 (expression -> variable .)
+    RETURN          reduce using rule 26 (expression -> variable .)
+    CONTINUE        reduce using rule 26 (expression -> variable .)
+    BREAK           reduce using rule 26 (expression -> variable .)
+    {               reduce using rule 26 (expression -> variable .)
+    PRINT           reduce using rule 26 (expression -> variable .)
+    FOR             reduce using rule 26 (expression -> variable .)
+    WHILE           reduce using rule 26 (expression -> variable .)
+    IF              reduce using rule 26 (expression -> variable .)
+    ID              reduce using rule 26 (expression -> variable .)
+
+
+state 25
+
+    (27) expression -> STRING .
+    ;               reduce using rule 27 (expression -> STRING .)
+    '               reduce using rule 27 (expression -> STRING .)
+    DOTDIV          reduce using rule 27 (expression -> STRING .)
+    DOTMUL          reduce using rule 27 (expression -> STRING .)
+    DOTSUB          reduce using rule 27 (expression -> STRING .)
+    DOTADD          reduce using rule 27 (expression -> STRING .)
+    /               reduce using rule 27 (expression -> STRING .)
+    *               reduce using rule 27 (expression -> STRING .)
+    -               reduce using rule 27 (expression -> STRING .)
+    +               reduce using rule 27 (expression -> STRING .)
+    ,               reduce using rule 27 (expression -> STRING .)
+    )               reduce using rule 27 (expression -> STRING .)
+    ]               reduce using rule 27 (expression -> STRING .)
+    NE              reduce using rule 27 (expression -> STRING .)
+    EQ              reduce using rule 27 (expression -> STRING .)
+    GE              reduce using rule 27 (expression -> STRING .)
+    LE              reduce using rule 27 (expression -> STRING .)
+    >               reduce using rule 27 (expression -> STRING .)
+    <               reduce using rule 27 (expression -> STRING .)
+    :               reduce using rule 27 (expression -> STRING .)
+    RETURN          reduce using rule 27 (expression -> STRING .)
+    CONTINUE        reduce using rule 27 (expression -> STRING .)
+    BREAK           reduce using rule 27 (expression -> STRING .)
+    {               reduce using rule 27 (expression -> STRING .)
+    PRINT           reduce using rule 27 (expression -> STRING .)
+    FOR             reduce using rule 27 (expression -> STRING .)
+    WHILE           reduce using rule 27 (expression -> STRING .)
+    IF              reduce using rule 27 (expression -> STRING .)
+    ID              reduce using rule 27 (expression -> STRING .)
+
+
+state 26
+
+    (28) expression -> FLOATNUM .
+    ;               reduce using rule 28 (expression -> FLOATNUM .)
+    '               reduce using rule 28 (expression -> FLOATNUM .)
+    DOTDIV          reduce using rule 28 (expression -> FLOATNUM .)
+    DOTMUL          reduce using rule 28 (expression -> FLOATNUM .)
+    DOTSUB          reduce using rule 28 (expression -> FLOATNUM .)
+    DOTADD          reduce using rule 28 (expression -> FLOATNUM .)
+    /               reduce using rule 28 (expression -> FLOATNUM .)
+    *               reduce using rule 28 (expression -> FLOATNUM .)
+    -               reduce using rule 28 (expression -> FLOATNUM .)
+    +               reduce using rule 28 (expression -> FLOATNUM .)
+    ,               reduce using rule 28 (expression -> FLOATNUM .)
+    )               reduce using rule 28 (expression -> FLOATNUM .)
+    ]               reduce using rule 28 (expression -> FLOATNUM .)
+    NE              reduce using rule 28 (expression -> FLOATNUM .)
+    EQ              reduce using rule 28 (expression -> FLOATNUM .)
+    GE              reduce using rule 28 (expression -> FLOATNUM .)
+    LE              reduce using rule 28 (expression -> FLOATNUM .)
+    >               reduce using rule 28 (expression -> FLOATNUM .)
+    <               reduce using rule 28 (expression -> FLOATNUM .)
+    :               reduce using rule 28 (expression -> FLOATNUM .)
+    RETURN          reduce using rule 28 (expression -> FLOATNUM .)
+    CONTINUE        reduce using rule 28 (expression -> FLOATNUM .)
+    BREAK           reduce using rule 28 (expression -> FLOATNUM .)
+    {               reduce using rule 28 (expression -> FLOATNUM .)
+    PRINT           reduce using rule 28 (expression -> FLOATNUM .)
+    FOR             reduce using rule 28 (expression -> FLOATNUM .)
+    WHILE           reduce using rule 28 (expression -> FLOATNUM .)
+    IF              reduce using rule 28 (expression -> FLOATNUM .)
+    ID              reduce using rule 28 (expression -> FLOATNUM .)
+
+
+state 27
+
+    (29) expression -> INTNUM .
+    ;               reduce using rule 29 (expression -> INTNUM .)
+    '               reduce using rule 29 (expression -> INTNUM .)
+    DOTDIV          reduce using rule 29 (expression -> INTNUM .)
+    DOTMUL          reduce using rule 29 (expression -> INTNUM .)
+    DOTSUB          reduce using rule 29 (expression -> INTNUM .)
+    DOTADD          reduce using rule 29 (expression -> INTNUM .)
+    /               reduce using rule 29 (expression -> INTNUM .)
+    *               reduce using rule 29 (expression -> INTNUM .)
+    -               reduce using rule 29 (expression -> INTNUM .)
+    +               reduce using rule 29 (expression -> INTNUM .)
+    ,               reduce using rule 29 (expression -> INTNUM .)
+    )               reduce using rule 29 (expression -> INTNUM .)
+    ]               reduce using rule 29 (expression -> INTNUM .)
+    NE              reduce using rule 29 (expression -> INTNUM .)
+    EQ              reduce using rule 29 (expression -> INTNUM .)
+    GE              reduce using rule 29 (expression -> INTNUM .)
+    LE              reduce using rule 29 (expression -> INTNUM .)
+    >               reduce using rule 29 (expression -> INTNUM .)
+    <               reduce using rule 29 (expression -> INTNUM .)
+    :               reduce using rule 29 (expression -> INTNUM .)
+    RETURN          reduce using rule 29 (expression -> INTNUM .)
+    CONTINUE        reduce using rule 29 (expression -> INTNUM .)
+    BREAK           reduce using rule 29 (expression -> INTNUM .)
+    {               reduce using rule 29 (expression -> INTNUM .)
+    PRINT           reduce using rule 29 (expression -> INTNUM .)
+    FOR             reduce using rule 29 (expression -> INTNUM .)
+    WHILE           reduce using rule 29 (expression -> INTNUM .)
+    IF              reduce using rule 29 (expression -> INTNUM .)
+    ID              reduce using rule 29 (expression -> INTNUM .)
+
+
+state 28
+
+    (30) expression -> ( . expression )
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 59
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 29
+
+    (32) expression -> [ . matrix_rows ]
+    (56) matrix_rows -> . matrix_row
+    (57) matrix_rows -> . matrix_rows ; matrix_row
+    (58) matrix_row -> . [ number_list ]
+    [               shift and go to state 60
+
+    matrix_rows                    shift and go to state 61
+    matrix_row                     shift and go to state 62
+
+state 30
+
+    (33) expression -> - . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 63
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 31
+
+    (49) matrix_function -> EYE . ( INTNUM )
+    (               shift and go to state 64
+
+
+state 32
+
+    (50) matrix_function -> ONES . ( INTNUM )
+    (               shift and go to state 65
+
+
+state 33
+
+    (51) matrix_function -> ZEROS . ( INTNUM )
+    (               shift and go to state 66
+
+
+state 34
+
+    (8) instruction -> CONTINUE ; .
+    RETURN          reduce using rule 8 (instruction -> CONTINUE ; .)
+    CONTINUE        reduce using rule 8 (instruction -> CONTINUE ; .)
+    BREAK           reduce using rule 8 (instruction -> CONTINUE ; .)
+    {               reduce using rule 8 (instruction -> CONTINUE ; .)
+    ;               reduce using rule 8 (instruction -> CONTINUE ; .)
+    PRINT           reduce using rule 8 (instruction -> CONTINUE ; .)
+    FOR             reduce using rule 8 (instruction -> CONTINUE ; .)
+    WHILE           reduce using rule 8 (instruction -> CONTINUE ; .)
+    IF              reduce using rule 8 (instruction -> CONTINUE ; .)
+    ID              reduce using rule 8 (instruction -> CONTINUE ; .)
+    $end            reduce using rule 8 (instruction -> CONTINUE ; .)
+    }               reduce using rule 8 (instruction -> CONTINUE ; .)
+    ELSE            reduce using rule 8 (instruction -> CONTINUE ; .)
+
+
+state 35
+
+    (9) instruction -> BREAK ; .
+    RETURN          reduce using rule 9 (instruction -> BREAK ; .)
+    CONTINUE        reduce using rule 9 (instruction -> BREAK ; .)
+    BREAK           reduce using rule 9 (instruction -> BREAK ; .)
+    {               reduce using rule 9 (instruction -> BREAK ; .)
+    ;               reduce using rule 9 (instruction -> BREAK ; .)
+    PRINT           reduce using rule 9 (instruction -> BREAK ; .)
+    FOR             reduce using rule 9 (instruction -> BREAK ; .)
+    WHILE           reduce using rule 9 (instruction -> BREAK ; .)
+    IF              reduce using rule 9 (instruction -> BREAK ; .)
+    ID              reduce using rule 9 (instruction -> BREAK ; .)
+    $end            reduce using rule 9 (instruction -> BREAK ; .)
+    }               reduce using rule 9 (instruction -> BREAK ; .)
+    ELSE            reduce using rule 9 (instruction -> BREAK ; .)
+
+
+state 36
+
+    (15) instruction -> { instructions . }
+    (6) instructions -> instructions . instruction
+    (7) instruction -> . RETURN expression ;
+    (8) instruction -> . CONTINUE ;
+    (9) instruction -> . BREAK ;
+    (10) instruction -> . print_statement
+    (11) instruction -> . assignment
+    (12) instruction -> . for_statement
+    (13) instruction -> . while_statement
+    (14) instruction -> . if_statement
+    (15) instruction -> . { instructions }
+    (16) instruction -> . ;
+    (22) print_statement -> . PRINT print_list ;
+    (44) assignment -> . variable DIVASSIGN expression ;
+    (45) assignment -> . variable MULASSIGN expression ;
+    (46) assignment -> . variable SUBASSIGN expression ;
+    (47) assignment -> . variable ADDASSIGN expression ;
+    (48) assignment -> . variable = expression ;
+    (20) for_statement -> . FOR ID = range instruction
+    (19) while_statement -> . WHILE ( condition ) instruction
+    (17) if_statement -> . IF ( condition ) instruction
+    (18) if_statement -> . IF ( condition ) instruction ELSE instruction
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    }               shift and go to state 67
+    RETURN          shift and go to state 4
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    {               shift and go to state 13
+    ;               shift and go to state 5
+    PRINT           shift and go to state 14
+    FOR             shift and go to state 16
+    WHILE           shift and go to state 18
+    IF              shift and go to state 19
+    ID              shift and go to state 17
+
+    instruction                    shift and go to state 68
+    print_statement                shift and go to state 8
+    assignment                     shift and go to state 9
+    for_statement                  shift and go to state 10
+    while_statement                shift and go to state 11
+    if_statement                   shift and go to state 12
+    variable                       shift and go to state 15
+    matrix_access                  shift and go to state 20
+
+state 37
+
+    (5) instructions -> instruction .
+    }               reduce using rule 5 (instructions -> instruction .)
+    RETURN          reduce using rule 5 (instructions -> instruction .)
+    CONTINUE        reduce using rule 5 (instructions -> instruction .)
+    BREAK           reduce using rule 5 (instructions -> instruction .)
+    {               reduce using rule 5 (instructions -> instruction .)
+    ;               reduce using rule 5 (instructions -> instruction .)
+    PRINT           reduce using rule 5 (instructions -> instruction .)
+    FOR             reduce using rule 5 (instructions -> instruction .)
+    WHILE           reduce using rule 5 (instructions -> instruction .)
+    IF              reduce using rule 5 (instructions -> instruction .)
+    ID              reduce using rule 5 (instructions -> instruction .)
+
+
+state 38
+
+    (22) print_statement -> PRINT print_list . ;
+    (24) print_list -> print_list . , expression
+    ;               shift and go to state 69
+    ,               shift and go to state 70
+
+
+state 39
+
+    (23) print_list -> expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 23 (print_list -> expression .)
+    ,               reduce using rule 23 (print_list -> expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 40
+
+    (44) assignment -> variable DIVASSIGN . expression ;
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    variable                       shift and go to state 24
+    expression                     shift and go to state 71
+    matrix_function                shift and go to state 23
+    matrix_access                  shift and go to state 20
+
+state 41
+
+    (45) assignment -> variable MULASSIGN . expression ;
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    variable                       shift and go to state 24
+    expression                     shift and go to state 72
+    matrix_function                shift and go to state 23
+    matrix_access                  shift and go to state 20
+
+state 42
+
+    (46) assignment -> variable SUBASSIGN . expression ;
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    variable                       shift and go to state 24
+    expression                     shift and go to state 73
+    matrix_function                shift and go to state 23
+    matrix_access                  shift and go to state 20
+
+state 43
+
+    (47) assignment -> variable ADDASSIGN . expression ;
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    variable                       shift and go to state 24
+    expression                     shift and go to state 74
+    matrix_function                shift and go to state 23
+    matrix_access                  shift and go to state 20
+
+state 44
+
+    (48) assignment -> variable = . expression ;
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    variable                       shift and go to state 24
+    expression                     shift and go to state 75
+    matrix_function                shift and go to state 23
+    matrix_access                  shift and go to state 20
+
+state 45
+
+    (20) for_statement -> FOR ID . = range instruction
+    =               shift and go to state 76
+
+
+state 46
+
+    (52) matrix_access -> ID [ . index_list ]
+    (53) index_list -> . index
+    (54) index_list -> . index_list , index
+    (55) index -> . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    index_list                     shift and go to state 77
+    index                          shift and go to state 78
+    expression                     shift and go to state 79
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 47
+
+    (19) while_statement -> WHILE ( . condition ) instruction
+    (65) condition -> . expression NE expression
+    (66) condition -> . expression EQ expression
+    (67) condition -> . expression GE expression
+    (68) condition -> . expression LE expression
+    (69) condition -> . expression > expression
+    (70) condition -> . expression < expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    condition                      shift and go to state 80
+    expression                     shift and go to state 81
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 48
+
+    (17) if_statement -> IF ( . condition ) instruction
+    (18) if_statement -> IF ( . condition ) instruction ELSE instruction
+    (65) condition -> . expression NE expression
+    (66) condition -> . expression EQ expression
+    (67) condition -> . expression GE expression
+    (68) condition -> . expression LE expression
+    (69) condition -> . expression > expression
+    (70) condition -> . expression < expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    condition                      shift and go to state 82
+    expression                     shift and go to state 81
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 49
+
+    (7) instruction -> RETURN expression ; .
+    RETURN          reduce using rule 7 (instruction -> RETURN expression ; .)
+    CONTINUE        reduce using rule 7 (instruction -> RETURN expression ; .)
+    BREAK           reduce using rule 7 (instruction -> RETURN expression ; .)
+    {               reduce using rule 7 (instruction -> RETURN expression ; .)
+    ;               reduce using rule 7 (instruction -> RETURN expression ; .)
+    PRINT           reduce using rule 7 (instruction -> RETURN expression ; .)
+    FOR             reduce using rule 7 (instruction -> RETURN expression ; .)
+    WHILE           reduce using rule 7 (instruction -> RETURN expression ; .)
+    IF              reduce using rule 7 (instruction -> RETURN expression ; .)
+    ID              reduce using rule 7 (instruction -> RETURN expression ; .)
+    $end            reduce using rule 7 (instruction -> RETURN expression ; .)
+    }               reduce using rule 7 (instruction -> RETURN expression ; .)
+    ELSE            reduce using rule 7 (instruction -> RETURN expression ; .)
+
+
+state 50
+
+    (31) expression -> expression ' .
+    ;               reduce using rule 31 (expression -> expression ' .)
+    '               reduce using rule 31 (expression -> expression ' .)
+    DOTDIV          reduce using rule 31 (expression -> expression ' .)
+    DOTMUL          reduce using rule 31 (expression -> expression ' .)
+    DOTSUB          reduce using rule 31 (expression -> expression ' .)
+    DOTADD          reduce using rule 31 (expression -> expression ' .)
+    /               reduce using rule 31 (expression -> expression ' .)
+    *               reduce using rule 31 (expression -> expression ' .)
+    -               reduce using rule 31 (expression -> expression ' .)
+    +               reduce using rule 31 (expression -> expression ' .)
+    ,               reduce using rule 31 (expression -> expression ' .)
+    )               reduce using rule 31 (expression -> expression ' .)
+    ]               reduce using rule 31 (expression -> expression ' .)
+    NE              reduce using rule 31 (expression -> expression ' .)
+    EQ              reduce using rule 31 (expression -> expression ' .)
+    GE              reduce using rule 31 (expression -> expression ' .)
+    LE              reduce using rule 31 (expression -> expression ' .)
+    >               reduce using rule 31 (expression -> expression ' .)
+    <               reduce using rule 31 (expression -> expression ' .)
+    :               reduce using rule 31 (expression -> expression ' .)
+    RETURN          reduce using rule 31 (expression -> expression ' .)
+    CONTINUE        reduce using rule 31 (expression -> expression ' .)
+    BREAK           reduce using rule 31 (expression -> expression ' .)
+    {               reduce using rule 31 (expression -> expression ' .)
+    PRINT           reduce using rule 31 (expression -> expression ' .)
+    FOR             reduce using rule 31 (expression -> expression ' .)
+    WHILE           reduce using rule 31 (expression -> expression ' .)
+    IF              reduce using rule 31 (expression -> expression ' .)
+    ID              reduce using rule 31 (expression -> expression ' .)
+
+
+state 51
+
+    (34) expression -> expression DOTDIV . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 83
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 52
+
+    (35) expression -> expression DOTMUL . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 84
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 53
+
+    (36) expression -> expression DOTSUB . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 85
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 54
+
+    (37) expression -> expression DOTADD . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 86
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 55
+
+    (38) expression -> expression / . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 87
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 56
+
+    (39) expression -> expression * . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 88
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 57
+
+    (40) expression -> expression - . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 89
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 58
+
+    (41) expression -> expression + . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 90
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 59
+
+    (30) expression -> ( expression . )
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    )               shift and go to state 91
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 60
+
+    (58) matrix_row -> [ . number_list ]
+    (59) number_list -> . signed_number
+    (60) number_list -> . number_list , signed_number
+    (61) signed_number -> . - number
+    (62) signed_number -> . number
+    (63) number -> . INTNUM
+    (64) number -> . FLOATNUM
+    -               shift and go to state 94
+    INTNUM          shift and go to state 96
+    FLOATNUM        shift and go to state 97
+
+    number_list                    shift and go to state 92
+    signed_number                  shift and go to state 93
+    number                         shift and go to state 95
+
+state 61
+
+    (32) expression -> [ matrix_rows . ]
+    (57) matrix_rows -> matrix_rows . ; matrix_row
+    ]               shift and go to state 98
+    ;               shift and go to state 99
+
+
+state 62
+
+    (56) matrix_rows -> matrix_row .
+    ]               reduce using rule 56 (matrix_rows -> matrix_row .)
+    ;               reduce using rule 56 (matrix_rows -> matrix_row .)
+
+
+state 63
+
+    (33) expression -> - expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 33 (expression -> - expression .)
+    DOTSUB          reduce using rule 33 (expression -> - expression .)
+    DOTADD          reduce using rule 33 (expression -> - expression .)
+    -               reduce using rule 33 (expression -> - expression .)
+    +               reduce using rule 33 (expression -> - expression .)
+    ,               reduce using rule 33 (expression -> - expression .)
+    )               reduce using rule 33 (expression -> - expression .)
+    ]               reduce using rule 33 (expression -> - expression .)
+    NE              reduce using rule 33 (expression -> - expression .)
+    EQ              reduce using rule 33 (expression -> - expression .)
+    GE              reduce using rule 33 (expression -> - expression .)
+    LE              reduce using rule 33 (expression -> - expression .)
+    >               reduce using rule 33 (expression -> - expression .)
+    <               reduce using rule 33 (expression -> - expression .)
+    :               reduce using rule 33 (expression -> - expression .)
+    RETURN          reduce using rule 33 (expression -> - expression .)
+    CONTINUE        reduce using rule 33 (expression -> - expression .)
+    BREAK           reduce using rule 33 (expression -> - expression .)
+    {               reduce using rule 33 (expression -> - expression .)
+    PRINT           reduce using rule 33 (expression -> - expression .)
+    FOR             reduce using rule 33 (expression -> - expression .)
+    WHILE           reduce using rule 33 (expression -> - expression .)
+    IF              reduce using rule 33 (expression -> - expression .)
+    ID              reduce using rule 33 (expression -> - expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    /               shift and go to state 55
+    *               shift and go to state 56
+
+
+state 64
+
+    (49) matrix_function -> EYE ( . INTNUM )
+    INTNUM          shift and go to state 100
+
+
+state 65
+
+    (50) matrix_function -> ONES ( . INTNUM )
+    INTNUM          shift and go to state 101
+
+
+state 66
+
+    (51) matrix_function -> ZEROS ( . INTNUM )
+    INTNUM          shift and go to state 102
+
+
+state 67
+
+    (15) instruction -> { instructions } .
+    RETURN          reduce using rule 15 (instruction -> { instructions } .)
+    CONTINUE        reduce using rule 15 (instruction -> { instructions } .)
+    BREAK           reduce using rule 15 (instruction -> { instructions } .)
+    {               reduce using rule 15 (instruction -> { instructions } .)
+    ;               reduce using rule 15 (instruction -> { instructions } .)
+    PRINT           reduce using rule 15 (instruction -> { instructions } .)
+    FOR             reduce using rule 15 (instruction -> { instructions } .)
+    WHILE           reduce using rule 15 (instruction -> { instructions } .)
+    IF              reduce using rule 15 (instruction -> { instructions } .)
+    ID              reduce using rule 15 (instruction -> { instructions } .)
+    $end            reduce using rule 15 (instruction -> { instructions } .)
+    }               reduce using rule 15 (instruction -> { instructions } .)
+    ELSE            reduce using rule 15 (instruction -> { instructions } .)
+
+
+state 68
+
+    (6) instructions -> instructions instruction .
+    }               reduce using rule 6 (instructions -> instructions instruction .)
+    RETURN          reduce using rule 6 (instructions -> instructions instruction .)
+    CONTINUE        reduce using rule 6 (instructions -> instructions instruction .)
+    BREAK           reduce using rule 6 (instructions -> instructions instruction .)
+    {               reduce using rule 6 (instructions -> instructions instruction .)
+    ;               reduce using rule 6 (instructions -> instructions instruction .)
+    PRINT           reduce using rule 6 (instructions -> instructions instruction .)
+    FOR             reduce using rule 6 (instructions -> instructions instruction .)
+    WHILE           reduce using rule 6 (instructions -> instructions instruction .)
+    IF              reduce using rule 6 (instructions -> instructions instruction .)
+    ID              reduce using rule 6 (instructions -> instructions instruction .)
+
+
+state 69
+
+    (22) print_statement -> PRINT print_list ; .
+    RETURN          reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    CONTINUE        reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    BREAK           reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    {               reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    ;               reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    PRINT           reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    FOR             reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    WHILE           reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    IF              reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    ID              reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    $end            reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    }               reduce using rule 22 (print_statement -> PRINT print_list ; .)
+    ELSE            reduce using rule 22 (print_statement -> PRINT print_list ; .)
+
+
+state 70
+
+    (24) print_list -> print_list , . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 103
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 71
+
+    (44) assignment -> variable DIVASSIGN expression . ;
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               shift and go to state 104
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 72
+
+    (45) assignment -> variable MULASSIGN expression . ;
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               shift and go to state 105
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 73
+
+    (46) assignment -> variable SUBASSIGN expression . ;
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               shift and go to state 106
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 74
+
+    (47) assignment -> variable ADDASSIGN expression . ;
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               shift and go to state 107
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 75
+
+    (48) assignment -> variable = expression . ;
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               shift and go to state 108
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 76
+
+    (20) for_statement -> FOR ID = . range instruction
+    (21) range -> . expression : expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    range                          shift and go to state 109
+    expression                     shift and go to state 110
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 77
+
+    (52) matrix_access -> ID [ index_list . ]
+    (54) index_list -> index_list . , index
+    ]               shift and go to state 111
+    ,               shift and go to state 112
+
+
+state 78
+
+    (53) index_list -> index .
+    ]               reduce using rule 53 (index_list -> index .)
+    ,               reduce using rule 53 (index_list -> index .)
+
+
+state 79
+
+    (55) index -> expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ]               reduce using rule 55 (index -> expression .)
+    ,               reduce using rule 55 (index -> expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 80
+
+    (19) while_statement -> WHILE ( condition . ) instruction
+    )               shift and go to state 113
+
+
+state 81
+
+    (65) condition -> expression . NE expression
+    (66) condition -> expression . EQ expression
+    (67) condition -> expression . GE expression
+    (68) condition -> expression . LE expression
+    (69) condition -> expression . > expression
+    (70) condition -> expression . < expression
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    NE              shift and go to state 114
+    EQ              shift and go to state 115
+    GE              shift and go to state 116
+    LE              shift and go to state 117
+    >               shift and go to state 118
+    <               shift and go to state 119
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 82
+
+    (17) if_statement -> IF ( condition . ) instruction
+    (18) if_statement -> IF ( condition . ) instruction ELSE instruction
+    )               shift and go to state 120
+
+
+state 83
+
+    (34) expression -> expression DOTDIV expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    DOTDIV          reduce using rule 34 (expression -> expression DOTDIV expression .)
+    DOTMUL          reduce using rule 34 (expression -> expression DOTDIV expression .)
+    DOTSUB          reduce using rule 34 (expression -> expression DOTDIV expression .)
+    DOTADD          reduce using rule 34 (expression -> expression DOTDIV expression .)
+    /               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    *               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    -               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    +               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    ,               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    )               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    ]               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    NE              reduce using rule 34 (expression -> expression DOTDIV expression .)
+    EQ              reduce using rule 34 (expression -> expression DOTDIV expression .)
+    GE              reduce using rule 34 (expression -> expression DOTDIV expression .)
+    LE              reduce using rule 34 (expression -> expression DOTDIV expression .)
+    >               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    <               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    :               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    RETURN          reduce using rule 34 (expression -> expression DOTDIV expression .)
+    CONTINUE        reduce using rule 34 (expression -> expression DOTDIV expression .)
+    BREAK           reduce using rule 34 (expression -> expression DOTDIV expression .)
+    {               reduce using rule 34 (expression -> expression DOTDIV expression .)
+    PRINT           reduce using rule 34 (expression -> expression DOTDIV expression .)
+    FOR             reduce using rule 34 (expression -> expression DOTDIV expression .)
+    WHILE           reduce using rule 34 (expression -> expression DOTDIV expression .)
+    IF              reduce using rule 34 (expression -> expression DOTDIV expression .)
+    ID              reduce using rule 34 (expression -> expression DOTDIV expression .)
+    '               shift and go to state 50
+
+
+state 84
+
+    (35) expression -> expression DOTMUL expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    DOTDIV          reduce using rule 35 (expression -> expression DOTMUL expression .)
+    DOTMUL          reduce using rule 35 (expression -> expression DOTMUL expression .)
+    DOTSUB          reduce using rule 35 (expression -> expression DOTMUL expression .)
+    DOTADD          reduce using rule 35 (expression -> expression DOTMUL expression .)
+    /               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    *               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    -               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    +               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    ,               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    )               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    ]               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    NE              reduce using rule 35 (expression -> expression DOTMUL expression .)
+    EQ              reduce using rule 35 (expression -> expression DOTMUL expression .)
+    GE              reduce using rule 35 (expression -> expression DOTMUL expression .)
+    LE              reduce using rule 35 (expression -> expression DOTMUL expression .)
+    >               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    <               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    :               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    RETURN          reduce using rule 35 (expression -> expression DOTMUL expression .)
+    CONTINUE        reduce using rule 35 (expression -> expression DOTMUL expression .)
+    BREAK           reduce using rule 35 (expression -> expression DOTMUL expression .)
+    {               reduce using rule 35 (expression -> expression DOTMUL expression .)
+    PRINT           reduce using rule 35 (expression -> expression DOTMUL expression .)
+    FOR             reduce using rule 35 (expression -> expression DOTMUL expression .)
+    WHILE           reduce using rule 35 (expression -> expression DOTMUL expression .)
+    IF              reduce using rule 35 (expression -> expression DOTMUL expression .)
+    ID              reduce using rule 35 (expression -> expression DOTMUL expression .)
+    '               shift and go to state 50
+
+
+state 85
+
+    (36) expression -> expression DOTSUB expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    DOTSUB          reduce using rule 36 (expression -> expression DOTSUB expression .)
+    DOTADD          reduce using rule 36 (expression -> expression DOTSUB expression .)
+    -               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    +               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    ,               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    )               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    ]               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    NE              reduce using rule 36 (expression -> expression DOTSUB expression .)
+    EQ              reduce using rule 36 (expression -> expression DOTSUB expression .)
+    GE              reduce using rule 36 (expression -> expression DOTSUB expression .)
+    LE              reduce using rule 36 (expression -> expression DOTSUB expression .)
+    >               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    <               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    :               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    RETURN          reduce using rule 36 (expression -> expression DOTSUB expression .)
+    CONTINUE        reduce using rule 36 (expression -> expression DOTSUB expression .)
+    BREAK           reduce using rule 36 (expression -> expression DOTSUB expression .)
+    {               reduce using rule 36 (expression -> expression DOTSUB expression .)
+    PRINT           reduce using rule 36 (expression -> expression DOTSUB expression .)
+    FOR             reduce using rule 36 (expression -> expression DOTSUB expression .)
+    WHILE           reduce using rule 36 (expression -> expression DOTSUB expression .)
+    IF              reduce using rule 36 (expression -> expression DOTSUB expression .)
+    ID              reduce using rule 36 (expression -> expression DOTSUB expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    /               shift and go to state 55
+    *               shift and go to state 56
+
+
+state 86
+
+    (37) expression -> expression DOTADD expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 37 (expression -> expression DOTADD expression .)
+    DOTSUB          reduce using rule 37 (expression -> expression DOTADD expression .)
+    DOTADD          reduce using rule 37 (expression -> expression DOTADD expression .)
+    -               reduce using rule 37 (expression -> expression DOTADD expression .)
+    +               reduce using rule 37 (expression -> expression DOTADD expression .)
+    ,               reduce using rule 37 (expression -> expression DOTADD expression .)
+    )               reduce using rule 37 (expression -> expression DOTADD expression .)
+    ]               reduce using rule 37 (expression -> expression DOTADD expression .)
+    NE              reduce using rule 37 (expression -> expression DOTADD expression .)
+    EQ              reduce using rule 37 (expression -> expression DOTADD expression .)
+    GE              reduce using rule 37 (expression -> expression DOTADD expression .)
+    LE              reduce using rule 37 (expression -> expression DOTADD expression .)
+    >               reduce using rule 37 (expression -> expression DOTADD expression .)
+    <               reduce using rule 37 (expression -> expression DOTADD expression .)
+    :               reduce using rule 37 (expression -> expression DOTADD expression .)
+    RETURN          reduce using rule 37 (expression -> expression DOTADD expression .)
+    CONTINUE        reduce using rule 37 (expression -> expression DOTADD expression .)
+    BREAK           reduce using rule 37 (expression -> expression DOTADD expression .)
+    {               reduce using rule 37 (expression -> expression DOTADD expression .)
+    PRINT           reduce using rule 37 (expression -> expression DOTADD expression .)
+    FOR             reduce using rule 37 (expression -> expression DOTADD expression .)
+    WHILE           reduce using rule 37 (expression -> expression DOTADD expression .)
+    IF              reduce using rule 37 (expression -> expression DOTADD expression .)
+    ID              reduce using rule 37 (expression -> expression DOTADD expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    /               shift and go to state 55
+    *               shift and go to state 56
+
+
+state 87
+
+    (38) expression -> expression / expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 38 (expression -> expression / expression .)
+    DOTDIV          reduce using rule 38 (expression -> expression / expression .)
+    DOTMUL          reduce using rule 38 (expression -> expression / expression .)
+    DOTSUB          reduce using rule 38 (expression -> expression / expression .)
+    DOTADD          reduce using rule 38 (expression -> expression / expression .)
+    /               reduce using rule 38 (expression -> expression / expression .)
+    *               reduce using rule 38 (expression -> expression / expression .)
+    -               reduce using rule 38 (expression -> expression / expression .)
+    +               reduce using rule 38 (expression -> expression / expression .)
+    ,               reduce using rule 38 (expression -> expression / expression .)
+    )               reduce using rule 38 (expression -> expression / expression .)
+    ]               reduce using rule 38 (expression -> expression / expression .)
+    NE              reduce using rule 38 (expression -> expression / expression .)
+    EQ              reduce using rule 38 (expression -> expression / expression .)
+    GE              reduce using rule 38 (expression -> expression / expression .)
+    LE              reduce using rule 38 (expression -> expression / expression .)
+    >               reduce using rule 38 (expression -> expression / expression .)
+    <               reduce using rule 38 (expression -> expression / expression .)
+    :               reduce using rule 38 (expression -> expression / expression .)
+    RETURN          reduce using rule 38 (expression -> expression / expression .)
+    CONTINUE        reduce using rule 38 (expression -> expression / expression .)
+    BREAK           reduce using rule 38 (expression -> expression / expression .)
+    {               reduce using rule 38 (expression -> expression / expression .)
+    PRINT           reduce using rule 38 (expression -> expression / expression .)
+    FOR             reduce using rule 38 (expression -> expression / expression .)
+    WHILE           reduce using rule 38 (expression -> expression / expression .)
+    IF              reduce using rule 38 (expression -> expression / expression .)
+    ID              reduce using rule 38 (expression -> expression / expression .)
+    '               shift and go to state 50
+
+
+state 88
+
+    (39) expression -> expression * expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 39 (expression -> expression * expression .)
+    DOTDIV          reduce using rule 39 (expression -> expression * expression .)
+    DOTMUL          reduce using rule 39 (expression -> expression * expression .)
+    DOTSUB          reduce using rule 39 (expression -> expression * expression .)
+    DOTADD          reduce using rule 39 (expression -> expression * expression .)
+    /               reduce using rule 39 (expression -> expression * expression .)
+    *               reduce using rule 39 (expression -> expression * expression .)
+    -               reduce using rule 39 (expression -> expression * expression .)
+    +               reduce using rule 39 (expression -> expression * expression .)
+    ,               reduce using rule 39 (expression -> expression * expression .)
+    )               reduce using rule 39 (expression -> expression * expression .)
+    ]               reduce using rule 39 (expression -> expression * expression .)
+    NE              reduce using rule 39 (expression -> expression * expression .)
+    EQ              reduce using rule 39 (expression -> expression * expression .)
+    GE              reduce using rule 39 (expression -> expression * expression .)
+    LE              reduce using rule 39 (expression -> expression * expression .)
+    >               reduce using rule 39 (expression -> expression * expression .)
+    <               reduce using rule 39 (expression -> expression * expression .)
+    :               reduce using rule 39 (expression -> expression * expression .)
+    RETURN          reduce using rule 39 (expression -> expression * expression .)
+    CONTINUE        reduce using rule 39 (expression -> expression * expression .)
+    BREAK           reduce using rule 39 (expression -> expression * expression .)
+    {               reduce using rule 39 (expression -> expression * expression .)
+    PRINT           reduce using rule 39 (expression -> expression * expression .)
+    FOR             reduce using rule 39 (expression -> expression * expression .)
+    WHILE           reduce using rule 39 (expression -> expression * expression .)
+    IF              reduce using rule 39 (expression -> expression * expression .)
+    ID              reduce using rule 39 (expression -> expression * expression .)
+    '               shift and go to state 50
+
+
+state 89
+
+    (40) expression -> expression - expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 40 (expression -> expression - expression .)
+    DOTSUB          reduce using rule 40 (expression -> expression - expression .)
+    DOTADD          reduce using rule 40 (expression -> expression - expression .)
+    -               reduce using rule 40 (expression -> expression - expression .)
+    +               reduce using rule 40 (expression -> expression - expression .)
+    ,               reduce using rule 40 (expression -> expression - expression .)
+    )               reduce using rule 40 (expression -> expression - expression .)
+    ]               reduce using rule 40 (expression -> expression - expression .)
+    NE              reduce using rule 40 (expression -> expression - expression .)
+    EQ              reduce using rule 40 (expression -> expression - expression .)
+    GE              reduce using rule 40 (expression -> expression - expression .)
+    LE              reduce using rule 40 (expression -> expression - expression .)
+    >               reduce using rule 40 (expression -> expression - expression .)
+    <               reduce using rule 40 (expression -> expression - expression .)
+    :               reduce using rule 40 (expression -> expression - expression .)
+    RETURN          reduce using rule 40 (expression -> expression - expression .)
+    CONTINUE        reduce using rule 40 (expression -> expression - expression .)
+    BREAK           reduce using rule 40 (expression -> expression - expression .)
+    {               reduce using rule 40 (expression -> expression - expression .)
+    PRINT           reduce using rule 40 (expression -> expression - expression .)
+    FOR             reduce using rule 40 (expression -> expression - expression .)
+    WHILE           reduce using rule 40 (expression -> expression - expression .)
+    IF              reduce using rule 40 (expression -> expression - expression .)
+    ID              reduce using rule 40 (expression -> expression - expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    /               shift and go to state 55
+    *               shift and go to state 56
+
+
+state 90
+
+    (41) expression -> expression + expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 41 (expression -> expression + expression .)
+    DOTSUB          reduce using rule 41 (expression -> expression + expression .)
+    DOTADD          reduce using rule 41 (expression -> expression + expression .)
+    -               reduce using rule 41 (expression -> expression + expression .)
+    +               reduce using rule 41 (expression -> expression + expression .)
+    ,               reduce using rule 41 (expression -> expression + expression .)
+    )               reduce using rule 41 (expression -> expression + expression .)
+    ]               reduce using rule 41 (expression -> expression + expression .)
+    NE              reduce using rule 41 (expression -> expression + expression .)
+    EQ              reduce using rule 41 (expression -> expression + expression .)
+    GE              reduce using rule 41 (expression -> expression + expression .)
+    LE              reduce using rule 41 (expression -> expression + expression .)
+    >               reduce using rule 41 (expression -> expression + expression .)
+    <               reduce using rule 41 (expression -> expression + expression .)
+    :               reduce using rule 41 (expression -> expression + expression .)
+    RETURN          reduce using rule 41 (expression -> expression + expression .)
+    CONTINUE        reduce using rule 41 (expression -> expression + expression .)
+    BREAK           reduce using rule 41 (expression -> expression + expression .)
+    {               reduce using rule 41 (expression -> expression + expression .)
+    PRINT           reduce using rule 41 (expression -> expression + expression .)
+    FOR             reduce using rule 41 (expression -> expression + expression .)
+    WHILE           reduce using rule 41 (expression -> expression + expression .)
+    IF              reduce using rule 41 (expression -> expression + expression .)
+    ID              reduce using rule 41 (expression -> expression + expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    /               shift and go to state 55
+    *               shift and go to state 56
+
+
+state 91
+
+    (30) expression -> ( expression ) .
+    ;               reduce using rule 30 (expression -> ( expression ) .)
+    '               reduce using rule 30 (expression -> ( expression ) .)
+    DOTDIV          reduce using rule 30 (expression -> ( expression ) .)
+    DOTMUL          reduce using rule 30 (expression -> ( expression ) .)
+    DOTSUB          reduce using rule 30 (expression -> ( expression ) .)
+    DOTADD          reduce using rule 30 (expression -> ( expression ) .)
+    /               reduce using rule 30 (expression -> ( expression ) .)
+    *               reduce using rule 30 (expression -> ( expression ) .)
+    -               reduce using rule 30 (expression -> ( expression ) .)
+    +               reduce using rule 30 (expression -> ( expression ) .)
+    ,               reduce using rule 30 (expression -> ( expression ) .)
+    )               reduce using rule 30 (expression -> ( expression ) .)
+    ]               reduce using rule 30 (expression -> ( expression ) .)
+    NE              reduce using rule 30 (expression -> ( expression ) .)
+    EQ              reduce using rule 30 (expression -> ( expression ) .)
+    GE              reduce using rule 30 (expression -> ( expression ) .)
+    LE              reduce using rule 30 (expression -> ( expression ) .)
+    >               reduce using rule 30 (expression -> ( expression ) .)
+    <               reduce using rule 30 (expression -> ( expression ) .)
+    :               reduce using rule 30 (expression -> ( expression ) .)
+    RETURN          reduce using rule 30 (expression -> ( expression ) .)
+    CONTINUE        reduce using rule 30 (expression -> ( expression ) .)
+    BREAK           reduce using rule 30 (expression -> ( expression ) .)
+    {               reduce using rule 30 (expression -> ( expression ) .)
+    PRINT           reduce using rule 30 (expression -> ( expression ) .)
+    FOR             reduce using rule 30 (expression -> ( expression ) .)
+    WHILE           reduce using rule 30 (expression -> ( expression ) .)
+    IF              reduce using rule 30 (expression -> ( expression ) .)
+    ID              reduce using rule 30 (expression -> ( expression ) .)
+
+
+state 92
+
+    (58) matrix_row -> [ number_list . ]
+    (60) number_list -> number_list . , signed_number
+    ]               shift and go to state 121
+    ,               shift and go to state 122
+
+
+state 93
+
+    (59) number_list -> signed_number .
+    ]               reduce using rule 59 (number_list -> signed_number .)
+    ,               reduce using rule 59 (number_list -> signed_number .)
+
+
+state 94
+
+    (61) signed_number -> - . number
+    (63) number -> . INTNUM
+    (64) number -> . FLOATNUM
+    INTNUM          shift and go to state 96
+    FLOATNUM        shift and go to state 97
+
+    number                         shift and go to state 123
+
+state 95
+
+    (62) signed_number -> number .
+    ]               reduce using rule 62 (signed_number -> number .)
+    ,               reduce using rule 62 (signed_number -> number .)
+
+
+state 96
+
+    (63) number -> INTNUM .
+    ]               reduce using rule 63 (number -> INTNUM .)
+    ,               reduce using rule 63 (number -> INTNUM .)
+
+
+state 97
+
+    (64) number -> FLOATNUM .
+    ]               reduce using rule 64 (number -> FLOATNUM .)
+    ,               reduce using rule 64 (number -> FLOATNUM .)
+
+
+state 98
+
+    (32) expression -> [ matrix_rows ] .
+    ;               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    '               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    DOTDIV          reduce using rule 32 (expression -> [ matrix_rows ] .)
+    DOTMUL          reduce using rule 32 (expression -> [ matrix_rows ] .)
+    DOTSUB          reduce using rule 32 (expression -> [ matrix_rows ] .)
+    DOTADD          reduce using rule 32 (expression -> [ matrix_rows ] .)
+    /               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    *               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    -               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    +               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    ,               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    )               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    ]               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    NE              reduce using rule 32 (expression -> [ matrix_rows ] .)
+    EQ              reduce using rule 32 (expression -> [ matrix_rows ] .)
+    GE              reduce using rule 32 (expression -> [ matrix_rows ] .)
+    LE              reduce using rule 32 (expression -> [ matrix_rows ] .)
+    >               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    <               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    :               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    RETURN          reduce using rule 32 (expression -> [ matrix_rows ] .)
+    CONTINUE        reduce using rule 32 (expression -> [ matrix_rows ] .)
+    BREAK           reduce using rule 32 (expression -> [ matrix_rows ] .)
+    {               reduce using rule 32 (expression -> [ matrix_rows ] .)
+    PRINT           reduce using rule 32 (expression -> [ matrix_rows ] .)
+    FOR             reduce using rule 32 (expression -> [ matrix_rows ] .)
+    WHILE           reduce using rule 32 (expression -> [ matrix_rows ] .)
+    IF              reduce using rule 32 (expression -> [ matrix_rows ] .)
+    ID              reduce using rule 32 (expression -> [ matrix_rows ] .)
+
+
+state 99
+
+    (57) matrix_rows -> matrix_rows ; . matrix_row
+    (58) matrix_row -> . [ number_list ]
+    [               shift and go to state 60
+
+    matrix_row                     shift and go to state 124
+
+state 100
+
+    (49) matrix_function -> EYE ( INTNUM . )
+    )               shift and go to state 125
+
+
+state 101
+
+    (50) matrix_function -> ONES ( INTNUM . )
+    )               shift and go to state 126
+
+
+state 102
+
+    (51) matrix_function -> ZEROS ( INTNUM . )
+    )               shift and go to state 127
+
+
+state 103
+
+    (24) print_list -> print_list , expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    ;               reduce using rule 24 (print_list -> print_list , expression .)
+    ,               reduce using rule 24 (print_list -> print_list , expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 104
+
+    (44) assignment -> variable DIVASSIGN expression ; .
+    RETURN          reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    CONTINUE        reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    BREAK           reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    {               reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    ;               reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    PRINT           reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    FOR             reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    WHILE           reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    IF              reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    ID              reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    $end            reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    }               reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+    ELSE            reduce using rule 44 (assignment -> variable DIVASSIGN expression ; .)
+
+
+state 105
+
+    (45) assignment -> variable MULASSIGN expression ; .
+    RETURN          reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    CONTINUE        reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    BREAK           reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    {               reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    ;               reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    PRINT           reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    FOR             reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    WHILE           reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    IF              reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    ID              reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    $end            reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    }               reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+    ELSE            reduce using rule 45 (assignment -> variable MULASSIGN expression ; .)
+
+
+state 106
+
+    (46) assignment -> variable SUBASSIGN expression ; .
+    RETURN          reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    CONTINUE        reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    BREAK           reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    {               reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    ;               reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    PRINT           reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    FOR             reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    WHILE           reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    IF              reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    ID              reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    $end            reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    }               reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+    ELSE            reduce using rule 46 (assignment -> variable SUBASSIGN expression ; .)
+
+
+state 107
+
+    (47) assignment -> variable ADDASSIGN expression ; .
+    RETURN          reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    CONTINUE        reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    BREAK           reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    {               reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    ;               reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    PRINT           reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    FOR             reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    WHILE           reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    IF              reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    ID              reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    $end            reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    }               reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+    ELSE            reduce using rule 47 (assignment -> variable ADDASSIGN expression ; .)
+
+
+state 108
+
+    (48) assignment -> variable = expression ; .
+    RETURN          reduce using rule 48 (assignment -> variable = expression ; .)
+    CONTINUE        reduce using rule 48 (assignment -> variable = expression ; .)
+    BREAK           reduce using rule 48 (assignment -> variable = expression ; .)
+    {               reduce using rule 48 (assignment -> variable = expression ; .)
+    ;               reduce using rule 48 (assignment -> variable = expression ; .)
+    PRINT           reduce using rule 48 (assignment -> variable = expression ; .)
+    FOR             reduce using rule 48 (assignment -> variable = expression ; .)
+    WHILE           reduce using rule 48 (assignment -> variable = expression ; .)
+    IF              reduce using rule 48 (assignment -> variable = expression ; .)
+    ID              reduce using rule 48 (assignment -> variable = expression ; .)
+    $end            reduce using rule 48 (assignment -> variable = expression ; .)
+    }               reduce using rule 48 (assignment -> variable = expression ; .)
+    ELSE            reduce using rule 48 (assignment -> variable = expression ; .)
+
+
+state 109
+
+    (20) for_statement -> FOR ID = range . instruction
+    (7) instruction -> . RETURN expression ;
+    (8) instruction -> . CONTINUE ;
+    (9) instruction -> . BREAK ;
+    (10) instruction -> . print_statement
+    (11) instruction -> . assignment
+    (12) instruction -> . for_statement
+    (13) instruction -> . while_statement
+    (14) instruction -> . if_statement
+    (15) instruction -> . { instructions }
+    (16) instruction -> . ;
+    (22) print_statement -> . PRINT print_list ;
+    (44) assignment -> . variable DIVASSIGN expression ;
+    (45) assignment -> . variable MULASSIGN expression ;
+    (46) assignment -> . variable SUBASSIGN expression ;
+    (47) assignment -> . variable ADDASSIGN expression ;
+    (48) assignment -> . variable = expression ;
+    (20) for_statement -> . FOR ID = range instruction
+    (19) while_statement -> . WHILE ( condition ) instruction
+    (17) if_statement -> . IF ( condition ) instruction
+    (18) if_statement -> . IF ( condition ) instruction ELSE instruction
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    RETURN          shift and go to state 4
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    {               shift and go to state 13
+    ;               shift and go to state 5
+    PRINT           shift and go to state 14
+    FOR             shift and go to state 16
+    WHILE           shift and go to state 18
+    IF              shift and go to state 19
+    ID              shift and go to state 17
+
+    instruction                    shift and go to state 128
+    print_statement                shift and go to state 8
+    assignment                     shift and go to state 9
+    for_statement                  shift and go to state 10
+    while_statement                shift and go to state 11
+    if_statement                   shift and go to state 12
+    variable                       shift and go to state 15
+    matrix_access                  shift and go to state 20
+
+state 110
+
+    (21) range -> expression . : expression
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    :               shift and go to state 129
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 111
+
+    (52) matrix_access -> ID [ index_list ] .
+    DIVASSIGN       reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    MULASSIGN       reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    SUBASSIGN       reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    ADDASSIGN       reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    =               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    ;               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    '               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    DOTDIV          reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    DOTMUL          reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    DOTSUB          reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    DOTADD          reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    /               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    *               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    -               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    +               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    ,               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    )               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    ]               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    NE              reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    EQ              reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    GE              reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    LE              reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    >               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    <               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    :               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    RETURN          reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    CONTINUE        reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    BREAK           reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    {               reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    PRINT           reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    FOR             reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    WHILE           reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    IF              reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+    ID              reduce using rule 52 (matrix_access -> ID [ index_list ] .)
+
+
+state 112
+
+    (54) index_list -> index_list , . index
+    (55) index -> . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    index                          shift and go to state 130
+    expression                     shift and go to state 79
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 113
+
+    (19) while_statement -> WHILE ( condition ) . instruction
+    (7) instruction -> . RETURN expression ;
+    (8) instruction -> . CONTINUE ;
+    (9) instruction -> . BREAK ;
+    (10) instruction -> . print_statement
+    (11) instruction -> . assignment
+    (12) instruction -> . for_statement
+    (13) instruction -> . while_statement
+    (14) instruction -> . if_statement
+    (15) instruction -> . { instructions }
+    (16) instruction -> . ;
+    (22) print_statement -> . PRINT print_list ;
+    (44) assignment -> . variable DIVASSIGN expression ;
+    (45) assignment -> . variable MULASSIGN expression ;
+    (46) assignment -> . variable SUBASSIGN expression ;
+    (47) assignment -> . variable ADDASSIGN expression ;
+    (48) assignment -> . variable = expression ;
+    (20) for_statement -> . FOR ID = range instruction
+    (19) while_statement -> . WHILE ( condition ) instruction
+    (17) if_statement -> . IF ( condition ) instruction
+    (18) if_statement -> . IF ( condition ) instruction ELSE instruction
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    RETURN          shift and go to state 4
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    {               shift and go to state 13
+    ;               shift and go to state 5
+    PRINT           shift and go to state 14
+    FOR             shift and go to state 16
+    WHILE           shift and go to state 18
+    IF              shift and go to state 19
+    ID              shift and go to state 17
+
+    instruction                    shift and go to state 131
+    print_statement                shift and go to state 8
+    assignment                     shift and go to state 9
+    for_statement                  shift and go to state 10
+    while_statement                shift and go to state 11
+    if_statement                   shift and go to state 12
+    variable                       shift and go to state 15
+    matrix_access                  shift and go to state 20
+
+state 114
+
+    (65) condition -> expression NE . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 132
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 115
+
+    (66) condition -> expression EQ . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 133
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 116
+
+    (67) condition -> expression GE . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 134
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 117
+
+    (68) condition -> expression LE . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 135
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 118
+
+    (69) condition -> expression > . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 136
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 119
+
+    (70) condition -> expression < . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 137
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 120
+
+    (17) if_statement -> IF ( condition ) . instruction
+    (18) if_statement -> IF ( condition ) . instruction ELSE instruction
+    (7) instruction -> . RETURN expression ;
+    (8) instruction -> . CONTINUE ;
+    (9) instruction -> . BREAK ;
+    (10) instruction -> . print_statement
+    (11) instruction -> . assignment
+    (12) instruction -> . for_statement
+    (13) instruction -> . while_statement
+    (14) instruction -> . if_statement
+    (15) instruction -> . { instructions }
+    (16) instruction -> . ;
+    (22) print_statement -> . PRINT print_list ;
+    (44) assignment -> . variable DIVASSIGN expression ;
+    (45) assignment -> . variable MULASSIGN expression ;
+    (46) assignment -> . variable SUBASSIGN expression ;
+    (47) assignment -> . variable ADDASSIGN expression ;
+    (48) assignment -> . variable = expression ;
+    (20) for_statement -> . FOR ID = range instruction
+    (19) while_statement -> . WHILE ( condition ) instruction
+    (17) if_statement -> . IF ( condition ) instruction
+    (18) if_statement -> . IF ( condition ) instruction ELSE instruction
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    RETURN          shift and go to state 4
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    {               shift and go to state 13
+    ;               shift and go to state 5
+    PRINT           shift and go to state 14
+    FOR             shift and go to state 16
+    WHILE           shift and go to state 18
+    IF              shift and go to state 19
+    ID              shift and go to state 17
+
+    instruction                    shift and go to state 138
+    print_statement                shift and go to state 8
+    assignment                     shift and go to state 9
+    for_statement                  shift and go to state 10
+    while_statement                shift and go to state 11
+    if_statement                   shift and go to state 12
+    variable                       shift and go to state 15
+    matrix_access                  shift and go to state 20
+
+state 121
+
+    (58) matrix_row -> [ number_list ] .
+    ]               reduce using rule 58 (matrix_row -> [ number_list ] .)
+    ;               reduce using rule 58 (matrix_row -> [ number_list ] .)
+
+
+state 122
+
+    (60) number_list -> number_list , . signed_number
+    (61) signed_number -> . - number
+    (62) signed_number -> . number
+    (63) number -> . INTNUM
+    (64) number -> . FLOATNUM
+    -               shift and go to state 94
+    INTNUM          shift and go to state 96
+    FLOATNUM        shift and go to state 97
+
+    signed_number                  shift and go to state 139
+    number                         shift and go to state 95
+
+state 123
+
+    (61) signed_number -> - number .
+    ]               reduce using rule 61 (signed_number -> - number .)
+    ,               reduce using rule 61 (signed_number -> - number .)
+
+
+state 124
+
+    (57) matrix_rows -> matrix_rows ; matrix_row .
+    ]               reduce using rule 57 (matrix_rows -> matrix_rows ; matrix_row .)
+    ;               reduce using rule 57 (matrix_rows -> matrix_rows ; matrix_row .)
+
+
+state 125
+
+    (49) matrix_function -> EYE ( INTNUM ) .
+    ;               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    '               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    DOTDIV          reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    DOTMUL          reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    DOTSUB          reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    DOTADD          reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    /               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    *               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    -               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    +               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    ,               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    )               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    ]               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    NE              reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    EQ              reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    GE              reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    LE              reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    >               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    <               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    :               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    RETURN          reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    CONTINUE        reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    BREAK           reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    {               reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    PRINT           reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    FOR             reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    WHILE           reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    IF              reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+    ID              reduce using rule 49 (matrix_function -> EYE ( INTNUM ) .)
+
+
+state 126
+
+    (50) matrix_function -> ONES ( INTNUM ) .
+    ;               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    '               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    DOTDIV          reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    DOTMUL          reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    DOTSUB          reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    DOTADD          reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    /               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    *               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    -               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    +               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    ,               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    )               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    ]               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    NE              reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    EQ              reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    GE              reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    LE              reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    >               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    <               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    :               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    RETURN          reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    CONTINUE        reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    BREAK           reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    {               reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    PRINT           reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    FOR             reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    WHILE           reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    IF              reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+    ID              reduce using rule 50 (matrix_function -> ONES ( INTNUM ) .)
+
+
+state 127
+
+    (51) matrix_function -> ZEROS ( INTNUM ) .
+    ;               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    '               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    DOTDIV          reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    DOTMUL          reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    DOTSUB          reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    DOTADD          reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    /               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    *               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    -               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    +               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    ,               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    )               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    ]               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    NE              reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    EQ              reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    GE              reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    LE              reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    >               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    <               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    :               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    RETURN          reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    CONTINUE        reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    BREAK           reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    {               reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    PRINT           reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    FOR             reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    WHILE           reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    IF              reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+    ID              reduce using rule 51 (matrix_function -> ZEROS ( INTNUM ) .)
+
+
+state 128
+
+    (20) for_statement -> FOR ID = range instruction .
+    RETURN          reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    CONTINUE        reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    BREAK           reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    {               reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    ;               reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    PRINT           reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    FOR             reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    WHILE           reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    IF              reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    ID              reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    $end            reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    }               reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+    ELSE            reduce using rule 20 (for_statement -> FOR ID = range instruction .)
+
+
+state 129
+
+    (21) range -> expression : . expression
+    (25) expression -> . matrix_function
+    (26) expression -> . variable
+    (27) expression -> . STRING
+    (28) expression -> . FLOATNUM
+    (29) expression -> . INTNUM
+    (30) expression -> . ( expression )
+    (31) expression -> . expression '
+    (32) expression -> . [ matrix_rows ]
+    (33) expression -> . - expression
+    (34) expression -> . expression DOTDIV expression
+    (35) expression -> . expression DOTMUL expression
+    (36) expression -> . expression DOTSUB expression
+    (37) expression -> . expression DOTADD expression
+    (38) expression -> . expression / expression
+    (39) expression -> . expression * expression
+    (40) expression -> . expression - expression
+    (41) expression -> . expression + expression
+    (49) matrix_function -> . EYE ( INTNUM )
+    (50) matrix_function -> . ONES ( INTNUM )
+    (51) matrix_function -> . ZEROS ( INTNUM )
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    STRING          shift and go to state 25
+    FLOATNUM        shift and go to state 26
+    INTNUM          shift and go to state 27
+    (               shift and go to state 28
+    [               shift and go to state 29
+    -               shift and go to state 30
+    EYE             shift and go to state 31
+    ONES            shift and go to state 32
+    ZEROS           shift and go to state 33
+    ID              shift and go to state 17
+
+    expression                     shift and go to state 140
+    matrix_function                shift and go to state 23
+    variable                       shift and go to state 24
+    matrix_access                  shift and go to state 20
+
+state 130
+
+    (54) index_list -> index_list , index .
+    ]               reduce using rule 54 (index_list -> index_list , index .)
+    ,               reduce using rule 54 (index_list -> index_list , index .)
+
+
+state 131
+
+    (19) while_statement -> WHILE ( condition ) instruction .
+    RETURN          reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    CONTINUE        reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    BREAK           reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    {               reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    ;               reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    PRINT           reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    FOR             reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    WHILE           reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    IF              reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    ID              reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    $end            reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    }               reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+    ELSE            reduce using rule 19 (while_statement -> WHILE ( condition ) instruction .)
+
+
+state 132
+
+    (65) condition -> expression NE expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    )               reduce using rule 65 (condition -> expression NE expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 133
+
+    (66) condition -> expression EQ expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    )               reduce using rule 66 (condition -> expression EQ expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 134
+
+    (67) condition -> expression GE expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    )               reduce using rule 67 (condition -> expression GE expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 135
+
+    (68) condition -> expression LE expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    )               reduce using rule 68 (condition -> expression LE expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 136
+
+    (69) condition -> expression > expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    )               reduce using rule 69 (condition -> expression > expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 137
+
+    (70) condition -> expression < expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    )               reduce using rule 70 (condition -> expression < expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 138
+
+    (17) if_statement -> IF ( condition ) instruction .
+    (18) if_statement -> IF ( condition ) instruction . ELSE instruction
+    RETURN          reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    CONTINUE        reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    BREAK           reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    {               reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    ;               reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    PRINT           reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    FOR             reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    WHILE           reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    IF              reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    ID              reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    $end            reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    }               reduce using rule 17 (if_statement -> IF ( condition ) instruction .)
+    ELSE            shift and go to state 141
+
+
+state 139
+
+    (60) number_list -> number_list , signed_number .
+    ]               reduce using rule 60 (number_list -> number_list , signed_number .)
+    ,               reduce using rule 60 (number_list -> number_list , signed_number .)
+
+
+state 140
+
+    (21) range -> expression : expression .
+    (31) expression -> expression . '
+    (34) expression -> expression . DOTDIV expression
+    (35) expression -> expression . DOTMUL expression
+    (36) expression -> expression . DOTSUB expression
+    (37) expression -> expression . DOTADD expression
+    (38) expression -> expression . / expression
+    (39) expression -> expression . * expression
+    (40) expression -> expression . - expression
+    (41) expression -> expression . + expression
+    RETURN          reduce using rule 21 (range -> expression : expression .)
+    CONTINUE        reduce using rule 21 (range -> expression : expression .)
+    BREAK           reduce using rule 21 (range -> expression : expression .)
+    {               reduce using rule 21 (range -> expression : expression .)
+    ;               reduce using rule 21 (range -> expression : expression .)
+    PRINT           reduce using rule 21 (range -> expression : expression .)
+    FOR             reduce using rule 21 (range -> expression : expression .)
+    WHILE           reduce using rule 21 (range -> expression : expression .)
+    IF              reduce using rule 21 (range -> expression : expression .)
+    ID              reduce using rule 21 (range -> expression : expression .)
+    '               shift and go to state 50
+    DOTDIV          shift and go to state 51
+    DOTMUL          shift and go to state 52
+    DOTSUB          shift and go to state 53
+    DOTADD          shift and go to state 54
+    /               shift and go to state 55
+    *               shift and go to state 56
+    -               shift and go to state 57
+    +               shift and go to state 58
+
+
+state 141
+
+    (18) if_statement -> IF ( condition ) instruction ELSE . instruction
+    (7) instruction -> . RETURN expression ;
+    (8) instruction -> . CONTINUE ;
+    (9) instruction -> . BREAK ;
+    (10) instruction -> . print_statement
+    (11) instruction -> . assignment
+    (12) instruction -> . for_statement
+    (13) instruction -> . while_statement
+    (14) instruction -> . if_statement
+    (15) instruction -> . { instructions }
+    (16) instruction -> . ;
+    (22) print_statement -> . PRINT print_list ;
+    (44) assignment -> . variable DIVASSIGN expression ;
+    (45) assignment -> . variable MULASSIGN expression ;
+    (46) assignment -> . variable SUBASSIGN expression ;
+    (47) assignment -> . variable ADDASSIGN expression ;
+    (48) assignment -> . variable = expression ;
+    (20) for_statement -> . FOR ID = range instruction
+    (19) while_statement -> . WHILE ( condition ) instruction
+    (17) if_statement -> . IF ( condition ) instruction
+    (18) if_statement -> . IF ( condition ) instruction ELSE instruction
+    (42) variable -> . matrix_access
+    (43) variable -> . ID
+    (52) matrix_access -> . ID [ index_list ]
+    RETURN          shift and go to state 4
+    CONTINUE        shift and go to state 6
+    BREAK           shift and go to state 7
+    {               shift and go to state 13
+    ;               shift and go to state 5
+    PRINT           shift and go to state 14
+    FOR             shift and go to state 16
+    WHILE           shift and go to state 18
+    IF              shift and go to state 19
+    ID              shift and go to state 17
+
+    instruction                    shift and go to state 142
+    print_statement                shift and go to state 8
+    assignment                     shift and go to state 9
+    for_statement                  shift and go to state 10
+    while_statement                shift and go to state 11
+    if_statement                   shift and go to state 12
+    variable                       shift and go to state 15
+    matrix_access                  shift and go to state 20
+
+state 142
+
+    (18) if_statement -> IF ( condition ) instruction ELSE instruction .
+    RETURN          reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    CONTINUE        reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    BREAK           reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    {               reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    ;               reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    PRINT           reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    FOR             reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    WHILE           reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    IF              reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    ID              reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    $end            reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    }               reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+    ELSE            reduce using rule 18 (if_statement -> IF ( condition ) instruction ELSE instruction .)
+
+
+Conflicts:
+
+shift/reduce conflict for RETURN in state 0 resolved as shift
+shift/reduce conflict for CONTINUE in state 0 resolved as shift
+shift/reduce conflict for BREAK in state 0 resolved as shift
+shift/reduce conflict for { in state 0 resolved as shift
+shift/reduce conflict for ; in state 0 resolved as shift
+shift/reduce conflict for PRINT in state 0 resolved as shift
+shift/reduce conflict for FOR in state 0 resolved as shift
+shift/reduce conflict for WHILE in state 0 resolved as shift
+shift/reduce conflict for IF in state 0 resolved as shift
+shift/reduce conflict for ID in state 0 resolved as shift

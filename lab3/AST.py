@@ -2,41 +2,88 @@
 # ruff: noqa
 
 from dataclasses import dataclass
-from typing import Any
+from typing import List
 
 
 @dataclass
-class Node(object):
+class Node:
     pass
 
 
 @dataclass
 class IntNum(Node):
-    value: Any
+    value: int
 
 
 @dataclass
 class FloatNum(Node):
-    value: Any
+    value: float
+
+
+@dataclass
+class String(Node):
+    value: str
 
 
 @dataclass
 class Variable(Node):
-    name: Any
+    name: str
 
 
 @dataclass
 class BinExpr(Node):
-    op: Any
-    left: Any
-    right: Any
+    op: str
+    left: Node
+    right: Node
 
 
-# ...
-# fill out missing classes
-# ...
+@dataclass
+class Assignment(Node):
+    op: str
+    variable: Variable
+    expression: Node
 
 
+@dataclass
+class MatrixFunction(Node):
+    function: str
+    argument: Node
+
+
+@dataclass
+class Matrix(Node):
+    rows: List[List[Node]]
+
+
+@dataclass
+class MatrixAccess(Node):
+    variable: Variable
+    indices: List[Node]
+
+
+@dataclass
+class UnaryExpr(Node):
+    op: str
+    expr: Node
+
+
+@dataclass
+class Transpose(Node):
+    expr: Node
+
+
+@dataclass
+class Condition(Node):
+    op: str
+    left: Node
+    right: Node
+
+
+@dataclass
+class Print(Node):
+    expressions: List[Node]
+
+
+@dataclass
 class Error(Node):
-    def __init__(self):
-        pass
+    message: str = ""

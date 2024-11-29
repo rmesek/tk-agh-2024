@@ -24,174 +24,160 @@ class Mparser(Parser):
     # Starting rule
     @_('instructions_opt')
     def program(self, p):
-        pass
+        return p.instructions_opt
 
     # Optional list of instructions
     @_('instructions_opt instruction')
     def instructions_opt(self, p):
-        pass
+        return [*p.instructions_opt, p.instruction] if p.instructions_opt else [p.instruction]
 
     @_('')
     def instructions_opt(self, p):
-        pass
+        return []
 
     # List of instructions
     @_('instructions instruction')
     def instructions(self, p):
-        pass
+        return [*p.instructions, p.instruction]
 
     @_('instruction')
     def instructions(self, p):
-        pass
-
-    # Definitions of different types of instructions
-    @_('";"',
-       '"{" instructions "}"',
-       'if_statement',
-       'while_statement',
-       'for_statement',
-       'assignment',
-       'print_statement',
-       'BREAK ";"',
-       'CONTINUE ";"',
-       'RETURN expression ";"')
-    def instruction(self, p):
-        pass
-
-    # If statement with optional else
-    @_('IF "(" condition ")" instruction ELSE instruction',
-       'IF "(" condition ")" instruction %prec IFX')
-    def if_statement(self, p):
-        pass
-
-    # While loop
-    @_('WHILE "(" condition ")" instruction')
-    def while_statement(self, p):
-        pass
-
-    # For loop
-    @_('FOR ID "=" range ":" range instruction')
-    def for_statement(self, p):
-        pass
-
-    # Range in for loop
-    @_('ID',
-       'INTNUM')
-    def range(self, p):
-        pass
-
-    # Print statement
-    @_('PRINT print_list ";"')
-    def print_statement(self, p):
-        pass
-
-    # List of expressions to print
-    @_('print_list "," expression',
-       'expression')
-    def print_list(self, p):
-        pass
+        return [p.instruction]
 
     # Types of expressions
-    @_('INTNUM',
-       'FLOATNUM',
-       'ID',
-       'STRING',
-       'assignment',
-       'condition',
-       'matrix_function',
-       'matrix_access',
-       '"-" expression',
-       '"[" matrix_rows "]"',
-       'expression "\'"',
-       '"(" expression ")"')
+    @_('INTNUM')
     def expression(self, p):
-        pass
+        return AST.IntNum(p.INTNUM)
+
+    @_('FLOATNUM')
+    def expression(self, p):
+        return AST.FloatNum(p.FLOATNUM)
+
+    @_('ID')
+    def expression(self, p):
+        return AST.Variable(p.ID)
+
+    @_('STRING')
+    def expression(self, p):
+        return AST.String(p.STRING)
+
+    @_('"-" expression')
+    def expression(self, p):
+        return AST.UnaryExpr('-', p.expression)
+
+    @_('expression "\'"')
+    def expression(self, p):
+        return AST.Transpose(p.expression)
+
+    @_('"(" expression ")"')
+    def expression(self, p):
+        return p.expression
 
     # Binary expressions
     @_('expression "+" expression',
-       'expression "-" expression',
-       'expression "*" expression',
-       'expression "/" expression',
-       'expression DOTADD expression',
-       'expression DOTSUB expression',
-       'expression DOTMUL expression',
-       'expression DOTDIV expression')
+    'expression "-" expression',
+    'expression "*" expression', 
+    'expression "/" expression',
+    'expression DOTADD expression',
+    'expression DOTSUB expression',
+    'expression DOTMUL expression',
+    'expression DOTDIV expression')
     def expression(self, p):
-        AST.BinExpr(p[1], p[0], p[2])
+        return AST.BinExpr(p[1], p[0], p[2])
 
     # Assignment operations
     @_('variable "=" expression ";"',
-       'variable ADDASSIGN expression ";"',
-       'variable SUBASSIGN expression ";"',
-       'variable MULASSIGN expression ";"',
-       'variable DIVASSIGN expression ";"')
+    'variable ADDASSIGN expression ";"',
+    'variable SUBASSIGN expression ";"',
+    'variable MULASSIGN expression ";"',
+    'variable DIVASSIGN expression ";"')
     def assignment(self, p):
-        pass
+        return AST.Assignment(p[1], p.variable, p.expression)
 
     # Variable or matrix access
-    @_('ID',
-       'matrix_access')
+    @_('ID')
     def variable(self, p):
-        pass
+        return AST.Variable(p.ID)
 
-    # Conditional expressions
+    @_('matrix_access')
+    def variable(self, p):
+        return p.matrix_access
+
+    # Conditional expressions  
     @_('expression "<" expression',
-       'expression ">" expression',
-       'expression LE expression',
-       'expression GE expression',
-       'expression EQ expression',
-       'expression NE expression')
+    'expression ">" expression',
+    'expression LE expression',
+    'expression GE expression',
+    'expression EQ expression',
+    'expression NE expression')
     def condition(self, p):
-        pass
+        return AST.Condition(p[1], p[0], p[2])
 
-    # Matrix functions like zeros, ones, eye
+    # Matrix functions
     @_('ZEROS "(" INTNUM ")"',
-       'ONES "(" INTNUM ")"',
-       'EYE "(" INTNUM ")"')
+    'ONES "(" INTNUM ")"',
+    'EYE "(" INTNUM ")"')
     def matrix_function(self, p):
-        pass
+        return AST.MatrixFunction(p[0], AST.IntNum(p.INTNUM))
 
-    # Accessing elements of a matrix with indices
+    # Matrix access
     @_('ID "[" index_list "]"')
     def matrix_access(self, p):
-        pass
+        return AST.MatrixAccess(AST.Variable(p.ID), p.index_list)
 
-    @_('index_list "," index',
-       'index')
+    @_('index_list "," index')
     def index_list(self, p):
-        pass
+        return [*p.index_list, p.index]
 
-    @_('ID',
-       'INTNUM')
+    @_('index')
+    def index_list(self, p):
+        return [p.index]
+
+    @_('ID')
     def index(self, p):
-        pass
+        return AST.Variable(p.ID)
 
-    @_('matrix_rows "," matrix_row',
-       'matrix_row')
+    @_('INTNUM')
+    def index(self, p):
+        return AST.IntNum(p.INTNUM)
+
+    # Matrix construction
+    @_('matrix_rows "," matrix_row')
     def matrix_rows(self, p):
-        pass
+        return [*p.matrix_rows, p.matrix_row]
+
+    @_('matrix_row')
+    def matrix_rows(self, p):
+        return [p.matrix_row]
 
     @_('"[" number_list "]"')
     def matrix_row(self, p):
-        pass
+        return p.number_list
 
-    # List of numbers with optional unary minus
-    @_('number_list "," signed_number',
-       'signed_number')
+    @_('number_list "," signed_number')
     def number_list(self, p):
-        pass
+        return [*p.number_list, p.signed_number]
 
-    # Signed numbers (optional unary minus)
-    @_('number',
-       '"-" number')
+    @_('signed_number')
+    def number_list(self, p):
+        return [p.signed_number]
+
+    @_('number')
     def signed_number(self, p):
-        pass
+        return p.number
 
-    @_('FLOATNUM',
-       'INTNUM')
+    @_('"-" number') 
+    def signed_number(self, p):
+        return AST.UnaryExpr('-', p.number)
+
+    @_('FLOATNUM')
     def number(self, p):
-        pass
+        return AST.FloatNum(p.FLOATNUM)
 
+    @_('INTNUM')
+    def number(self, p):
+        return AST.IntNum(p.INTNUM)
+    
     # Error handling
     def error(self, p):
         if p:
