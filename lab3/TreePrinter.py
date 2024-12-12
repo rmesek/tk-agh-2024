@@ -22,6 +22,23 @@ class TreePrinter:
         for stmt in self.statements:
             stmt.printTree(indent)
 
+    @addToClass(AST.BreakStatement)
+    def printTree(self, indent=0):
+        print(f"{'|  ' * indent}BREAK")
+
+    @addToClass(AST.ContinueStatement)
+    def printTree(self, indent=0):
+        print(f"{'|  ' * indent}CONTINUE")
+
+    @addToClass(AST.ReturnStatement)
+    def printTree(self, indent=0):
+        print(f"{'|  ' * indent}RETURN")
+        self.expr.printTree(indent + 1)
+
+    @addToClass(AST.BlankStatement)
+    def printTree(self, indent=0):
+        pass
+
     @addToClass(AST.AssignExpression)
     def printTree(self, indent=0):
         print(f"{'|  ' * indent}{self.operator}")
@@ -115,6 +132,10 @@ class TreePrinter:
         self.start.printTree(indent + 2)
         self.end.printTree(indent + 2)
         self.body.printTree(indent + 1)
+
+    @addToClass(AST.Variable)
+    def printTree(self, indent=0):
+        print(f"{'|  ' * indent}{self.name}")
 
     @addToClass(AST.PrintNode)
     def printTree(self, indent=0):

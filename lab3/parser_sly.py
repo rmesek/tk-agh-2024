@@ -4,6 +4,7 @@
 from sly import Parser
 from scanner_sly import Scanner
 import AST
+from TreePrinter import TreePrinter
 
 
 class Mparser(Parser):
@@ -11,34 +12,52 @@ class Mparser(Parser):
 
     debugfile = "parser.out"
 
-    precedence = (("nonassoc", IFX), ("nonassoc", ELSE), ("nonassoc", LTE, GTE, EQ, NEQ, LT, GT), ("left", ADD, SUB, DOTADD, DOTSUB), ("left", MUL, DIV, DOTMUL, DOTDIV), ("nonassoc", "'"))
+    precedence = (
+        ("nonassoc", IFX),
+        ("nonassoc", ELSE),
+        ("nonassoc", LTE, GTE, EQ, NEQ, LT, GT),
+        ("left", ADD, SUB, DOTADD, DOTSUB),
+        ("left", MUL, DIV, DOTMUL, DOTDIV),
+        ("nonassoc", "'"),
+    )
 
     @_("statements stmt", "stmt")
     def statements(self, p):
         if len(p) == 1:
-            return AST.StatementsNode([p[0]], lineno=p.lineno)
+            return AST.StatementsNode(statements=[p[0]], lineno=p.lineno)
 
         statements = p[0].statements.copy()
         statements.append(p[1])
 
-        return AST.StatementsNode(statements, lineno=p.lineno)
+        return AST.StatementsNode(statements=statements, lineno=p.lineno)
 
-    @_('";"', '"{" statements "}"', "if_stmt", "while_stmt", "for_stmt", "assign_expr", "print_stmt", 'BREAK ";"', 'CONTINUE ";"', 'RETURN expr ";"')
+    @_(
+        '";"',
+        '"{" statements "}"',
+        "if_stmt",
+        "while_stmt",
+        "for_stmt",
+        "assign_expr",
+        "print_stmt",
+        'BREAK ";"',
+        'CONTINUE ";"',
+        'RETURN expr ";"',
+    )
     def stmt(self, p):
         try:
-            if p.BREAK:
+            if p.BREAK is not None:
                 return AST.BreakStatement(lineno=p.lineno)
-        except:
+        except AttributeError:
             pass
         try:
-            if p.CONTINUE:
+            if p.CONTINUE is not None:
                 return AST.ContinueStatement(lineno=p.lineno)
-        except:
+        except AttributeError:
             pass
         try:
-            if p.RETURN:
-                return AST.ReturnStatement(p[1], lineno=p.lineno)
-        except:
+            if p.RETURN is not None:
+                return AST.ReturnStatement(expr=p[1], lineno=p.lineno)
+        except AttributeError:
             pass
 
         if p[0] == ";":
@@ -49,52 +68,45 @@ class Mparser(Parser):
 
         return p[1]
 
-    @_('IF "(" relation_expr ")" stmt ELSE stmt', 'IF "(" relation_expr ")" stmt %prec IFX')
+    @_(
+        'IF "(" relation_expr ")" stmt ELSE stmt',
+        'IF "(" relation_expr ")" stmt %prec IFX',
+    )
     def if_stmt(self, p):
-        condition = p[2]
-        if_body = p[4]
         else_body = None
 
         try:
-            if p.ELSE:
+            if p.ELSE is not None:
                 else_body = p[6]
-        except:
+        except AttributeError:
             pass
 
-        return AST.IfElseNode(condition, if_body, else_body, lineno=p.lineno)
+        return AST.IfElseNode(condition=p[2], if_body=p[4], else_body=else_body, lineno=p.lineno)
 
     @_('WHILE "(" relation_expr ")" stmt')
     def while_stmt(self, p):
-        condition = p.relation_expr
-        body = p.stmt
-
-        return AST.WhileNode(condition, body, lineno=p.lineno)
+        return AST.WhileNode(condition=p.relation_expr, body=p.stmt, lineno=p.lineno)
 
     @_('FOR ID "=" id_int ":" id_int stmt')
     def for_stmt(self, p):
-        variable = p.ID
-        start = p.id_int0
-        end = p.id_int1
-        body = p.stmt
-
-        return AST.ForNode(variable, start, end, body, lineno=p.lineno)
+        return AST.ForNode(variable=p.ID, start=p.id_int0, end=p.id_int1, body=p.stmt, lineno=p.lineno)
 
     @_("ID", "INTNUM")
     def id_int(self, p):
         try:
-            if p.INTNUM:
-                return AST.IntNum(p[0], lineno=p.lineno)
-        except:
+            if p.INTNUM is not None:
+                return AST.IntNum(value=p[0], lineno=p.lineno)
+        except AttributeError:
             pass
         try:
-            if p.ID:
-                return AST.IDNode(p[0], lineno=p.lineno)
-        except:
+            if p.ID is not None:
+                return AST.IDNode(name=p[0], lineno=p.lineno)
+        except AttributeError:
             pass
 
     @_('PRINT print_rek ";"')
     def print_stmt(self, p):
-        return AST.PrintNode(p[1], lineno=p.lineno)
+        return AST.PrintNode(value=p[1], lineno=p.lineno)
 
     @_('print_rek "," expr', "expr")
     def print_rek(self, p):
@@ -103,59 +115,70 @@ class Mparser(Parser):
         else:
             values = [p.expr]
 
-        return AST.PrintRekNode(values, lineno=p.lineno)
+        return AST.PrintRekNode(values=values, lineno=p.lineno)
 
     @_("INTNUM", "FLOAT", "ID", "STRING")
     def value(self, p):
         try:
-            if p.INTNUM or p.INTNUM == 0:
-                return AST.IntNum(p[0], lineno=p.lineno)
-        except:
+            if p.INTNUM is not None:
+                return AST.IntNum(value=p[0], lineno=p.lineno)
+        except AttributeError:
             pass
         try:
-            if p.FLOAT or p.FLOAT == 0.0:
-                return AST.FloatNum(p[0], lineno=p.lineno)
-        except:
+            if p.FLOAT is not None:
+                return AST.FloatNum(value=p[0], lineno=p.lineno)
+        except AttributeError:
             pass
         try:
-            if p.ID:
-                return AST.IDNode(p[0], lineno=p.lineno)
-        except:
+            if p.ID is not None:
+                return AST.IDNode(name=p[0], lineno=p.lineno)
+        except AttributeError:
             pass
         try:
-            if p.STRING:
-                return AST.Variable(p[0], lineno=p.lineno)
-        except:
+            if p.STRING is not None:
+                return AST.Variable(name=p[0], lineno=p.lineno)
+        except AttributeError:
             pass
 
         return None
 
-    @_("value", "assign_expr", "relation_expr", "matrix_funcs", "matrix_ref", "SUB expr", '"[" matrix_rows "]"', '"[" string_of_num "]"', 'expr "\'"', '"(" expr ")"')
+    @_(
+        "value",
+        "assign_expr",
+        "relation_expr",
+        "matrix_funcs",
+        "matrix_ref",
+        "SUB expr",
+        '"[" matrix_rows "]"',
+        '"[" string_of_num "]"',
+        'expr "\'"',
+        '"(" expr ")"',
+    )
     def expr(self, p):
         if len(p) == 1:
-            return AST.ExpressionNode(p[0], lineno=p.lineno)
+            return AST.ExpressionNode(expr=p[0], lineno=p.lineno)
 
         try:
-            if p.SUB:
-                return AST.NegationNode(p[1], lineno=p.lineno)
-        except:
+            if p.SUB is not None:
+                return AST.NegationNode(expr=p[1], lineno=p.lineno)
+        except AttributeError:
             pass
 
         if p[1] == "'":
-            return AST.TransposeNode(p[0], lineno=p.lineno)
+            return AST.TransposeNode(expr=p[0], lineno=p.lineno)
 
         if p[0] == "(":
-            return AST.ExpressionNode(p[1], lineno=p.lineno)
+            return AST.ExpressionNode(expr=p[1], lineno=p.lineno)
 
-        return AST.MatrixNode(p[1], lineno=p.lineno)
+        return AST.MatrixNode(values=p[1], lineno=p.lineno)
 
     @_("expr ADD expr", "expr SUB expr", "expr MUL expr", "expr DIV expr")
     def expr(self, p):
-        return AST.BinExpr(p[1], p[0], p[2], lineno=p.lineno)
+        return AST.BinExpr(op=p[1], left=p[0], right=p[2], lineno=p.lineno)
 
     @_("expr DOTADD expr", "expr DOTSUB expr", "expr DOTMUL expr", "expr DOTDIV expr")
     def expr(self, p):
-        return AST.BinExpr(p[1], p[0], p[2], lineno=p.lineno)
+        return AST.BinExpr(op=p[1], left=p[0], right=p[2], lineno=p.lineno)
 
     @_(
         'id_ref "=" expr ";"',
@@ -165,17 +188,17 @@ class Mparser(Parser):
         'id_ref DIVASSIGN expr ";"',
     )
     def assign_expr(self, p):
-        return AST.AssignExpression(p[0], p[1], p[2], lineno=p.lineno)
+        return AST.AssignExpression(left=p[0], operator=p[1], right=p[2], lineno=p.lineno)
 
     @_("ID", "matrix_ref")
     def id_ref(self, p):
         try:
-            if p.matrix_ref:
+            if p.matrix_ref is not None:
                 return p[0]
-        except:
+        except AttributeError:
             pass
 
-        return AST.IDRefNode(p[0], lineno=p.lineno)
+        return AST.IDRefNode(value=p[0], lineno=p.lineno)
 
     @_(
         "expr LT expr",
@@ -186,48 +209,46 @@ class Mparser(Parser):
         "expr NEQ expr",
     )
     def relation_expr(self, p):
-        return AST.RelationExpression(p[1], p[0], p[2], lineno=p.lineno)
+        return AST.RelationExpression(op=p[1], left=p[0], right=p[2], lineno=p.lineno)
 
     @_('ZEROS "(" INTNUM ")"', 'ONES "(" INTNUM ")"', 'EYE "(" INTNUM ")"')
     def matrix_funcs(self, p):
         func_name = p[0]
-        arg = p[2]
 
         if func_name == "zeros":
-            return AST.ZerosNode(func_name, arg, lineno=p.lineno)
+            return AST.ZerosNode(func_name=p[0], arg=p[2], lineno=p.lineno)
         elif func_name == "ones":
-            return AST.OnesNode(func_name, arg, lineno=p.lineno)
+            return AST.OnesNode(func_name=p[0], arg=p[2], lineno=p.lineno)
         elif func_name == "eye":
-            return AST.EyeNode(func_name, arg, lineno=p.lineno)
+            return AST.EyeNode(func_name=p[0], arg=p[2], lineno=p.lineno)
 
     @_('ID "[" string_of_num "]"')
     def matrix_ref(self, p):
-        return AST.MatrixRefNode(p[0], p[2], lineno=p.lineno)
+        return AST.MatrixRefNode(id=p[0], values=p[2], lineno=p.lineno)
 
     @_('"[" string_of_num "]"', 'matrix_rows "," "[" string_of_num "]"')
     def matrix_rows(self, p):
         if len(p) == 3:
-            return AST.MatrixRowsNode([p[1]], lineno=p.lineno)
+            return AST.MatrixRowsNode(values=[p[1]], lineno=p.lineno)
 
-        rows = p[0].values.copy()
+        rows = p.matrix_rows.values.copy()
         rows.append(p[3])
 
-        return AST.MatrixRowsNode(rows, lineno=p.lineno)
+        return AST.MatrixRowsNode(values=rows, lineno=p.lineno)
 
     @_("INTNUM", 'string_of_num "," INTNUM')
     def string_of_num(self, p):
         if len(p) == 1:
-            values = [p[0]]
+            return AST.StringOfNumNode(values=[p[0]], lineno=p.lineno)
         else:
             values = p[0].values.copy()
             values.append(p[2])
-
-        return AST.StringOfNumNode(values, lineno=p.lineno)
+            return AST.StringOfNumNode(values=values, lineno=p.lineno)
 
     # Error handling
     def error(self, p):
         if p:
-            print(f"\033[91mSyntax error at '{p.value}'" + f" in line {p.lineno}!\033[0m")
+            print(f"\033[91mSyntax error at '{p.value}' in line {p.lineno}!\033[0m")
             self.restart()
         else:
             print("\033[91mSyntax error at EOF\033[0m")
@@ -237,10 +258,13 @@ if __name__ == "__main__":
     from scanner_sly import Scanner
 
     FILENAMES = [
-        r"example.txt",
         r"lab2/example1.m",
         r"lab2/example2.m",
         r"lab2/example3.m",
+        r"lab3/example.m",
+        r"lab3/example1.m",
+        r"lab3/example2.m",
+        r"lab3/example3.m",
     ]
 
     lexer = Scanner()
@@ -255,5 +279,6 @@ if __name__ == "__main__":
 
         text = file.read()
 
-        result = parser.parse(lexer.tokenize(text))
+        ast = parser.parse(lexer.tokenize(text))
+        ast.printTree()
         print(f"\033[92m{filename} parsed successfully!\033[0m")
