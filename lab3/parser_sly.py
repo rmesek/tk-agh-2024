@@ -18,6 +18,7 @@ class Mparser(Parser):
         ("nonassoc", LTE, GTE, EQ, NEQ, LT, GT),
         ("left", ADD, SUB, DOTADD, DOTSUB),
         ("left", MUL, DIV, DOTMUL, DOTDIV),
+        ("right", UMINUS),
         ("nonassoc", "'"),
     )
 
@@ -85,11 +86,11 @@ class Mparser(Parser):
 
     @_('WHILE "(" relation_expr ")" stmt')
     def while_stmt(self, p):
-        return AST.WhileNode(condition=p.relation_expr, body=p.stmt, lineno=p.lineno)
+        return AST.WhileNode(condition=p[2], body=p[4], lineno=p.lineno)
 
     @_('FOR ID "=" id_int ":" id_int stmt')
     def for_stmt(self, p):
-        return AST.ForNode(variable=p.ID, start=p.id_int0, end=p.id_int1, body=p.stmt, lineno=p.lineno)
+        return AST.ForNode(variable=p[1], start=p[3], end=p[5], body=p[6], lineno=p.lineno)
 
     @_("ID", "INTNUM")
     def id_int(self, p):
@@ -148,7 +149,7 @@ class Mparser(Parser):
         "relation_expr",
         "matrix_funcs",
         "matrix_ref",
-        "SUB expr",
+        "SUB expr %prec UMINUS",
         '"[" matrix_rows "]"',
         '"[" string_of_num "]"',
         'expr "\'"',

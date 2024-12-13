@@ -107,7 +107,7 @@ class TreePrinter:
     @addToClass(AST.NegationNode)
     def printTree(self, indent=0):
         print(f"{'|  ' * indent}-")
-        self.expr.printTree(indent)
+        self.expr.printTree(indent + 1)
 
     @addToClass(AST.IDNode)
     def printTree(self, indent=0):
@@ -140,7 +140,7 @@ class TreePrinter:
     @addToClass(AST.PrintNode)
     def printTree(self, indent=0):
         print(f"{'|  ' * indent}PRINT")
-        self.value.printTree(indent)
+        self.value.printTree(indent + 1)
 
     @addToClass(AST.PrintRekNode)
     def printTree(self, indent=0):
@@ -150,13 +150,13 @@ class TreePrinter:
     @addToClass(AST.WhileNode)
     def printTree(self, indent=0):
         print(f"{'|  ' * indent}WHILE")
-        self.condition.printTree(indent)
+        self.condition.printTree(indent + 1)
         self.body.printTree(indent + 1)
 
     @addToClass(AST.IfElseNode)
     def printTree(self, indent=0):
         print(f"{'|  ' * indent}IF")
-        self.condition.printTree(indent)
+        self.condition.printTree(indent + 1)
         print(f"{'|  ' * indent}THEN")
         self.if_body.printTree(indent + 1)
 
