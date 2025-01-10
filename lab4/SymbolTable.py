@@ -1,37 +1,53 @@
-#!/usr/bin/python
+class Symbol:
+    pass
 
 
 class VariableSymbol(Symbol):
-
     def __init__(self, name, type):
-        pass
-    #
+        self.name = name
+        self.type = type
 
 
-class SymbolTable(object):
+class SymbolTable:
+    def __init__(self, parent, name):  # parent scope and symbol table name
+        self.parent_scope = parent
+        self.name = name
+        self.symbols = {}
+        self.v_type = {}
+        self.v_dims = {}
 
-    def __init__(self, parent, name): # parent scope and symbol table name
-        pass
-    #
+    def put(self, name, symbol):  # put variable symbol or fundef under <name> entry
+        self.symbols[name] = symbol
 
-    def put(self, name, symbol): # put variable symbol or fundef under <name> entry
-        pass
-    #
+    def get(self, name):  # get variable symbol or fundef from <name> entry
+        if name in self.symbols:
+            return self.symbols[name]
+        elif self.parent_scope is not None:
+            return self.parent_scope.get(name)
+        else:
+            print(f"\033[91mSymbol '{name}' not found in scope {self.name}{self.symbols}\033[0m")
 
-    def get(self, name): # get variable symbol or fundef from <name> entry
-        pass
-    #
+    def get_v_dims(self, name):
+        if name in self.v_dims:
+            return self.v_dims[name]
+        elif self.parent_scope is not None:
+            return self.parent_scope.get_v_dims(name)
+        else:
+            print(f"\033[91mSymbol '{name}' not found in scope {self.name}{self.symbols}\033[0m")
+
+    def get_v_type(self, name):
+        if name in self.v_type:
+            return self.v_type[name]
+        elif self.parent_scope is not None:
+            return self.parent_scope.get_v_type(name)
+        else:
+            print(f"\033[91mSymbol '{name}' not found in scope {self.name}{self.symbols}\033[0m")
 
     def getParentScope(self):
-        pass
-    #
+        return self.parent_scope
 
     def pushScope(self, name):
-        pass
-    #
+        return SymbolTable(self, name)
 
     def popScope(self):
-        pass
-    #
-
-
+        return self.parent_scope

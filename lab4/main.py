@@ -1,12 +1,14 @@
+# type: ignore
+# ruff: noqa
 
 import sys
-import ply.yacc as yacc
-from Mparser import Mparser
+from scanner_sly import Scanner
+from parser_sly import MParser
 from TreePrinter import TreePrinter
 from TypeChecker import TypeChecker
 
-if __name__ == '__main__':
 
+if __name__ == "__main__":
     try:
         filename = sys.argv[1] if len(sys.argv) > 1 else "example.txt"
         file = open(filename, "r")
@@ -14,13 +16,11 @@ if __name__ == '__main__':
         print("Cannot open {0} file".format(filename))
         sys.exit(0)
 
-    Mparser = Mparser()
-    parser = yacc.yacc(module=Mparser)
     text = file.read()
+    lexer = Scanner()
+    parser = MParser()
+    typecheck = TypeChecker()
 
-    ast = parser.parse(text, lexer=Mparser.scanner)
-
-    # Below code shows how to use visitor
-    typeChecker = TypeChecker()   
-    typeChecker.visit(ast)   # or alternatively ast.accept(typeChecker)
-    
+    ast = parser.parse(lexer.tokenize(text))
+    ast.printTree()
+    typecheck.visit(ast)
