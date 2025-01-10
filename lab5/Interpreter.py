@@ -10,48 +10,48 @@ import sys
 sys.setrecursionlimit(10000)
 
 
-def mat_add(a, b):
-    for i in range(len(a)):
-        if isinstance(a[0], list):
-            for j in range(len(a[0])):
-                a[i][j] += b[i][j]
+def mat_add(matrix1, matrix2):
+    for row in range(len(matrix1)):
+        if isinstance(matrix1[0], list):
+            for col in range(len(matrix1[0])):
+                matrix1[row][col] += matrix2[row][col]
         else:
-            a[i] += b[i]
-    return a
+            matrix1[row] += matrix2[row]
+    return matrix1
 
 
-def mat_sub(a, b):
-    for i in range(len(a)):
-        if isinstance(a[0], list):
-            for j in range(len(a[0])):
-                a[i][j] -= b[i][j]
+def mat_sub(matrix1, matrix2):
+    for row in range(len(matrix1)):
+        if isinstance(matrix1[0], list):
+            for col in range(len(matrix1[0])):
+                matrix1[row][col] -= matrix2[row][col]
         else:
-            a[i] -= b[i]
-    return a
+            matrix1[row] -= matrix2[row]
+    return matrix1
 
 
-def mat_mul(a, b):
-    for i in range(len(a)):
-        if isinstance(a[0], list):
-            for j in range(len(a[0])):
-                a[i][j] *= b[i][j]
+def mat_mul(matrix1, matrix2):
+    for row in range(len(matrix1)):
+        if isinstance(matrix1[0], list):
+            for col in range(len(matrix1[0])):
+                matrix1[row][col] *= matrix2[row][col]
         else:
-            a[i] *= b[i]
-    return a
+            matrix1[row] *= matrix2[row]
+    return matrix1
 
 
-def mat_div(a, b):
-    for i in range(len(a)):
-        if isinstance(a[0], list):
-            for j in range(len(a[0])):
-                a[i][j] /= b[i][j]
+def mat_div(matrix1, matrix2):
+    for row in range(len(matrix1)):
+        if isinstance(matrix1[0], list):
+            for col in range(len(matrix1[0])):
+                matrix1[row][col] /= matrix2[row][col]
         else:
-            a[i] /= b[i]
-    return a
+            matrix1[row] /= matrix2[row]
+    return matrix1
 
 
-def transpose(a):
-    return [[a[j][i] for j in range(len(a))] for i in range(len(a[0]))]
+def transpose(matrix):
+    return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
 
 
 operations = {
@@ -90,9 +90,9 @@ class Interpreter(object):
 
     @when(AST.BinExpr)
     def visit(self, node: AST.BinExpr):
-        r1 = node.left.accept(self)
-        r2 = node.right.accept(self)
-        return operations[node.op](r1, r2)
+        left_value = node.left.accept(self)
+        right_value = node.right.accept(self)
+        return operations[node.op](left_value, right_value)
 
     @when(AST.Unary)
     def visit(self, node: AST.Unary):
@@ -166,11 +166,11 @@ class Interpreter(object):
     @when(AST.For)
     def visit(self, node: AST.For):
         iterator = node.id
-        start = node.cond_start.accept(self)
-        end = node.cond_end.accept(self)
+        start_value = node.cond_start.accept(self)
+        end_value = node.cond_end.accept(self)
         self.memory.push("for")
-        self.memory.set(iterator.id, start)
-        while self.memory.get(iterator.id) <= end:
+        self.memory.set(iterator.id, start_value)
+        while self.memory.get(iterator.id) <= end_value:
             try:
                 if isinstance(node.body, list):
                     for instruction in node.body:
@@ -212,22 +212,21 @@ class Interpreter(object):
         else:
             matrix = self.memory.get(node.left.id.id)
             if isinstance(node.left.index[0], tuple):
-                x = [i for i in range(node.left.index[0][0].accept(self), node.left.index[0][1].accept(self))]
+                row_indices = [i for i in range(node.left.index[0][0].accept(self), node.left.index[0][1].accept(self))]
             else:
-                x = [node.left.index[0].accept(self)]
+                row_indices = [node.left.index[0].accept(self)]
             if isinstance(node.left.index[1], tuple):
-                y = [i for i in range(node.left.index[1][0].accept(self), node.left.index[1][1].accept(self))]
+                col_indices = [i for i in range(node.left.index[1][0].accept(self), node.left.index[1][1].accept(self))]
             else:
-                y = [node.left.index[1].accept(self)]
+                col_indices = [node.left.index[1].accept(self)]
             if node.op == "=":
-                for i in x:
-                    for j in y:
-                        matrix[j][i] = node.right.accept(self)
+                for row in row_indices:
+                    for col in col_indices:
+                        matrix[col][row] = node.right.accept(self)
             else:
-                for i in x:
-                    for j in y:
-                        matrix[j][i] = operations[node.op[0]](matrix[j][i], node.right.accept(self))
-
+                for row in row_indices:
+                    for col in col_indices:
+                        matrix[col][row] = operations[node.op[0]](matrix[col][row], node.right.accept(self))
             self.memory.set(node.left.id.id, matrix)
 
     @when(AST.Vector)
