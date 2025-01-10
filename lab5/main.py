@@ -25,4 +25,6 @@ if __name__ == "__main__":
 
     ast = parser.parse(lexer.tokenize(text))
     typecheck.visit(ast)
+    print("\033[93mRunning\033[0m")
     interpreter.visit(ast)
+    print("\033[92mDone\033[0m")
