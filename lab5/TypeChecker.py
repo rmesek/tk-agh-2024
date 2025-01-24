@@ -13,7 +13,7 @@ for op in ["+", "-", "*", "/"]:
     ttype[op]["float"]["int"] = "float"
     ttype[op]["float"]["float"] = "float"
     ttype[op]["str"]["str"] = "str"
-    ttype[op]["vector"]["vector"] = "vector"
+ttype["+"]["vector"]["vector"] = "vector"
 ttype["*"]["str"]["int"] = "str"
 
 for op in [">", "<", ">=", "<=", "==", "!="]:
